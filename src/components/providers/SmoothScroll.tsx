@@ -47,7 +47,6 @@ export default function SmoothScroll() {
     const settled = window.setTimeout(refresh, 250);
     window.addEventListener("load", refresh);
     if (typeof document !== "undefined" && "fonts" in document) {
-      // @ts-expect-error: fonts.ready exists in modern browsers
       document.fonts?.ready?.then(refresh).catch(() => {});
     }
 
