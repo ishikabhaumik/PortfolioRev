@@ -1,0 +1,40 @@
+---
+title: Shaders, for Designers
+excerpt: A gentle invitation to GLSL — the secret weapon hiding behind every site that makes you stop scrolling.
+date: "2026.01.18"
+category: Essay · WebGL
+---
+
+There is a moment, on the best websites, where you stop scrolling and tilt your head slightly. Something has moved that you didn't expect to move. A surface seems to *think*.
+
+Almost always, that moment is a shader.
+
+## What a shader actually is
+
+A shader is a small program that runs once per pixel (or once per vertex). That's it. It doesn't have access to the DOM. It doesn't know what a `<div>` is. It just takes inputs — position, time, mouse — and decides, for each pixel, what colour to be.
+
+This sounds restrictive. It is the source of all the magic.
+
+## Why designers should care
+
+GLSL is the only place on the web where you can paint *with math*. A gradient isn't a CSS property; it's an equation. A noise pattern isn't a PNG; it's a function. A glow isn't a box-shadow; it's a soft falloff you wrote yourself.
+
+This means:
+
+- The output is **infinitely sharp** at every resolution.
+- The output is **animated for free** — pass `uTime` and any constant becomes a curve.
+- The output is **interactive for free** — pass `uMouse` and any pixel can respond.
+
+## Where to start
+
+You do not need to learn 3D. The most beautiful shader work on the web is 2D — a flat plane stretched across the viewport, lit by code.
+
+A minimal starting brief:
+
+> Make a fullscreen plane. Give it a colour that shifts based on `sin(uTime + gl_FragCoord.x * 0.01)`. Open it in a browser. Watch it breathe.
+
+This is the entire game. Everything else is iteration on this.
+
+---
+
+You don't need to ship a shader on every project. But knowing that you *could* will quietly change every project. It is the difference between drawing with a pencil and drawing with the knowledge that paint exists.

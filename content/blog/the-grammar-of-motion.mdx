@@ -1,0 +1,39 @@
+---
+title: The Grammar of Motion
+excerpt: On easing curves, narrative weight, and why every animation deserves a sentence of its own.
+date: "2026.04.10"
+category: Essay · Motion
+---
+
+There is a particular kind of disappointment that comes from a website that *almost* feels alive. The buttons spring, the menus slide, the cards lift on hover — and yet the entire thing feels like a museum gift shop. Lots of motion, no music.
+
+I've come to think of this as a failure of grammar.
+
+## Motion is a sentence
+
+When a button moves, it is making a statement. The duration is its volume. The easing is its tone of voice. The delay is its pause for breath. A 200ms cubic-out is a brisk, businesslike "yes." A 1.2s expo-out is the slow nod of a maître d'.
+
+Most sites speak in the same monotone — a single duration, a single curve, applied to every element. The result reads like a corporate memo: technically correct, emotionally inert.
+
+> Treat motion the way a writer treats punctuation. A period is not a comma is not an em-dash. They are not interchangeable.
+
+## A starter taxonomy
+
+Here is the rough grammar I use across a project:
+
+- **Reveals**: slow, generous (1.0–1.6s with `expo.out`). These are the entrances. They should feel inevitable.
+- **Acknowledgements**: brisk, confident (250–400ms with `power3.out`). Hover states, focus rings, toggles. They confirm a user's action.
+- **Transitions**: cinematic, decisive (800ms–1.2s with `expo.inOut`). Curtains, page changes, scene shifts. They carry weight.
+- **Drift**: barely-perceptible, on autoplay (3–6s loops with sine easings). The ambient breath of a page.
+
+A page that uses all four is a page that has *something to say*. A page that uses one is just rearranging furniture.
+
+## On restraint
+
+The best motion designers I know remove far more than they add. They will spend a week on a hero, then quietly delete half of what made it impressive — because the goal is not to be impressive. The goal is for the user to remember the work.
+
+A site that animates everything is a site that emphasises nothing.
+
+---
+
+This is what I think about when I open a fresh project file. Before the colour palette, before the type system, I sketch the grammar of motion. Without it, even beautiful work falls flat.
