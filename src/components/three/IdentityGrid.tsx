@@ -4,7 +4,7 @@ import { useRef, useState, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Edges } from "@react-three/drei";
 import * as THREE from "three";
-import { AnimatePresence, motion } from "framer-motion";
+import { cn } from "@/lib/cn";
 
 /* ─── Data ───────────────────────────────────────────────────────────────── */
 
@@ -210,26 +210,28 @@ export default function IdentityGrid() {
         }}
       />
 
-      <div className="pointer-events-none absolute inset-x-0 -bottom-14 flex flex-col items-center md:-bottom-16">
-        <AnimatePresence mode="wait">
-          {hoveredCube && (
-            <motion.div
-              key={hoveredCube.id}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 4 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col items-center gap-2 text-center"
-            >
+      <div className="pointer-events-none absolute inset-x-0 -bottom-14 flex min-h-[4.5rem] flex-col items-center md:-bottom-16">
+        <div
+          key={hoveredCube?.id ?? "idle"}
+          className={cn(
+            "flex flex-col items-center gap-2 text-center transition-[opacity,transform] duration-[400ms] ease-out",
+            hoveredCube
+              ? "translate-y-0 opacity-100"
+              : "pointer-events-none translate-y-1 opacity-0"
+          )}
+          aria-hidden={!hoveredCube}
+        >
+          {hoveredCube ? (
+            <>
               <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-bone">
                 {hoveredCube.label}
               </span>
-              <span className="font-serif italic text-bone/55 text-sm md:text-base max-w-[28ch]">
+              <span className="max-w-[28ch] font-serif text-sm italic text-bone/55 md:text-base">
                 {hoveredCube.copy}
               </span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </>
+          ) : null}
+        </div>
       </div>
     </div>
   );
