@@ -60,11 +60,11 @@ export default function Hero({ startReveal }: HeroProps) {
       const xRange = window.innerWidth * 0.22;
       const yRange = window.innerHeight * 0.16;
 
-      // Long, coprime periods → looks random and slow.
+      // Coprime periods → looks random. 50% faster than before.
       const xRaw =
-        Math.sin(t / 18000) * 0.7 + Math.sin(t / 27000 + 1.3) * 0.4;
+        Math.sin(t / 8000) * 0.7 + Math.sin(t / 12000 + 1.3) * 0.4;
       const yRaw =
-        Math.cos(t / 22000) * 0.7 + Math.sin(t / 31000 + 0.7) * 0.4;
+        Math.cos(t / 10000) * 0.7 + Math.sin(t / 14000 + 0.7) * 0.4;
 
       const x = (xRaw / 1.1) * xRange;
       const y = (yRaw / 1.1) * yRange;
@@ -149,6 +149,32 @@ export default function Hero({ startReveal }: HeroProps) {
       >
         <div ref={cubeRef}>
           <RubiksCube size={cubeSize} />
+        </div>
+
+        {/* Mirror reflection — flipped, blurred, and faded out downward
+            on a non-flipped parent so the mask gradient is in screen space. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-0"
+          style={{
+            top: `calc(100% + ${Math.round(cubeSize * 0.32)}px)`,
+            width: cubeSize,
+            height: cubeSize,
+            WebkitMaskImage:
+              "linear-gradient(to bottom, rgba(0,0,0,0.07), transparent)",
+            maskImage:
+              "linear-gradient(to bottom, rgba(0,0,0,0.07), transparent)",
+          }}
+        >
+          <div
+            style={{
+              transform: "scaleY(-1)",
+              opacity: 0.07,
+              filter: "blur(4px)",
+            }}
+          >
+            <RubiksCube size={cubeSize} bare />
+          </div>
         </div>
       </div>
 

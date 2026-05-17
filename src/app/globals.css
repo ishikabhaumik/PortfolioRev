@@ -161,6 +161,10 @@ a {
 .cube-bob {
   position: relative;
   animation: cubeBob 6s ease-in-out infinite;
+  /* Faint white halo around the cube's outer silhouette — like a glass
+     object catching ambient light. Applied here so it traces the rendered
+     cube as a whole, not each individual tile. */
+  filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.15));
   will-change: transform;
 }
 
@@ -222,9 +226,9 @@ a {
 
 .cube-cell {
   border-radius: 4px;
-  /* Slick glass tile: a partly-opaque ink base hides most of the back-face
-     text, with a faint diagonal bone sheen on top for the glass feel.
-     Hairline border + top highlight + bottom shadow give the 3D edge. */
+  /* Etched panel of dark glass: opaque ink base + faint diagonal bone sheen.
+     A single hairline border (no chunky highlight/shadow) keeps the tiles
+     reading as panels rather than separate raised blocks. */
   background:
     linear-gradient(
       135deg,
@@ -233,10 +237,7 @@ a {
       rgba(236, 234, 228, 0.12) 100%
     ),
     #0a0a0a;
-  box-shadow:
-    inset 0 0 0 1px rgba(236, 234, 228, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }

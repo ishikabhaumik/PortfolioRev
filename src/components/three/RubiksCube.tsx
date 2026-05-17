@@ -6,6 +6,12 @@ interface RubiksCubeProps {
   /** Edge length of the cube in pixels. Drives all 3D math. */
   size?: number;
   className?: string;
+  /**
+   * If true, omit the depth-glow halo and ground shadow. Used by the
+   * mirror-reflection instance below the cube so those layers don't
+   * get duplicated underneath.
+   */
+  bare?: boolean;
 }
 
 /**
@@ -48,7 +54,11 @@ const CITY_LABELS = new Set([
   "Santa Barbara",
 ]);
 
-export default function RubiksCube({ size = 360, className }: RubiksCubeProps) {
+export default function RubiksCube({
+  size = 360,
+  className,
+  bare = false,
+}: RubiksCubeProps) {
   // 9 labels per face — read left-to-right, top-to-bottom across the
   // 3×3 grid. Order matches the spec the labels were authored against.
   const faceLabels: Record<string, string[]> = {
@@ -87,19 +97,23 @@ export default function RubiksCube({ size = 360, className }: RubiksCubeProps) {
       style={{ width: size, height: size }}
       aria-hidden
     >
-      {/* Soft halo of depth behind the cube. */}
-      <div className="cube-depth-glow" />
+      {!bare && (
+        <>
+          {/* Soft halo of depth behind the cube. */}
+          <div className="cube-depth-glow" />
 
-      {/* Faint blurred ground shadow — scales with the cube and sits below
-          its corner-down bottom vertex so the cube feels grounded. */}
-      <div
-        className="cube-ground-shadow"
-        style={{
-          top: `calc(100% + ${Math.round(size * 0.32)}px)`,
-          width: `${Math.round(size * 0.7)}px`,
-          height: `${Math.round(size * 0.08)}px`,
-        }}
-      />
+          {/* Faint blurred ground shadow — scales with the cube and sits below
+              its corner-down bottom vertex so the cube feels grounded. */}
+          <div
+            className="cube-ground-shadow"
+            style={{
+              top: `calc(100% + ${Math.round(size * 0.32)}px)`,
+              width: `${Math.round(size * 0.7)}px`,
+              height: `${Math.round(size * 0.08)}px`,
+            }}
+          />
+        </>
+      )}
 
       <div className="cube-bob" style={{ width: size, height: size }}>
         <div className="cube-spin" style={{ width: size, height: size }}>
@@ -118,9 +132,9 @@ export default function RubiksCube({ size = 360, className }: RubiksCubeProps) {
                         <span
                           className={cn(
                             "select-none break-words text-center font-mono text-[12px] leading-[1.15] md:text-[14px]",
-                            // Symbols recede behind words and city names
-                            // (current text-bone/80 minus 0.08 → 0.72).
-                            isSymbol ? "text-bone/[0.72]" : "text-bone/80",
+                            // +15% brightness: words 0.80 → 0.92,
+                            // symbols 0.72 → 0.83. Symbols still recede.
+                            isSymbol ? "text-bone/[0.83]" : "text-bone/[0.92]",
                             // Cities get more deliberate spacing.
                             isCity ? "tracking-[0.1em]" : "tracking-[0.02em]"
                           )}
