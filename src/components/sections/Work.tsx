@@ -78,6 +78,16 @@ export default function Work() {
     setSelected(null);
   }, []);
 
+  const scrollToContact = useCallback(() => {
+    const lenis = typeof window !== "undefined" ? window.__lenis : undefined;
+    if (lenis) {
+      lenis.scrollTo("#contact", { offset: -20, duration: 1.6 });
+    } else {
+      const target = document.querySelector("#contact");
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
+
   // Animate modal in/out
   useEffect(() => {
     const el = modalRef.current;
@@ -202,7 +212,18 @@ export default function Work() {
       </ol>
 
       <div className="mt-16 flex justify-end font-mono text-[10px] uppercase tracking-[0.4em] text-bone/40">
-        ↳ More on request
+        <button
+          type="button"
+          onClick={scrollToContact}
+          data-cursor="open"
+          className="group inline-flex items-center gap-2 transition-colors duration-500 hover:text-bone"
+        >
+          <span aria-hidden>↳</span>
+          <span className="relative">
+            More on request
+            <span className="absolute -bottom-1 left-0 block h-px w-0 bg-bone transition-[width] duration-700 ease-elegant group-hover:w-full" />
+          </span>
+        </button>
       </div>
 
       {/* Project modal */}

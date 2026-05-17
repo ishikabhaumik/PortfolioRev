@@ -10,7 +10,9 @@ const links: { label: string; meta: string; href: string }[] = [
   { label: "Index", meta: "00 — Home", href: "#hero" },
   { label: "Work", meta: "01 — Selected Projects", href: "#work" },
   { label: "About", meta: "02 — The Designer", href: "#about" },
-  { label: "Personal", meta: "03 — Off the Clock", href: "#personal" },
+  { label: "Practice", meta: "03 — Problem Solving", href: "#practice" },
+  { label: "Personal", meta: "04 — Off the Clock", href: "#personal" },
+  { label: "Lessons", meta: "05 — What I've Learnt", href: "#lessons" },
   { label: "Contact", meta: "06 — Let's Talk", href: "#contact" },
 ];
 

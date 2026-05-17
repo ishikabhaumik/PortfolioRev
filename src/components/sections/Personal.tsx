@@ -36,6 +36,31 @@ const pursuits: { title: string; blurb: string; label: string }[] = [
     title: "Books & Discourse",
     blurb: "I like reading books and intellectual discussions.",
   },
+  {
+    label: "Wanderlust",
+    title: "Travelling",
+    blurb: "New cities, new perspectives — the work always comes back richer.",
+  },
+  {
+    label: "On the road",
+    title: "Driving",
+    blurb: "Long drives are where my best thinking quietly happens.",
+  },
+  {
+    label: "Morning ritual",
+    title: "Brewing My Own Coffee",
+    blurb: "A slow, deliberate ritual — beans, water, patience.",
+  },
+  {
+    label: "Movement",
+    title: "Dancing",
+    blurb: "The fastest way to reset and feel like myself again.",
+  },
+  {
+    label: "Play",
+    title: "Gaming",
+    blurb: "Worlds, mechanics, and the joy of figuring things out.",
+  },
 ];
 
 const places: string[] = [
@@ -97,7 +122,7 @@ export default function Personal() {
       className="relative px-6 py-32 md:px-12 md:py-48"
     >
       <SectionLabel
-        index="[05]"
+        index="[06]"
         label="Off the clock"
         title="What keeps the work honest."
         subtitle="The hours that don't ship anything — but quietly inform everything that does."

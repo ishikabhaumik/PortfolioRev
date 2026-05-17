@@ -102,26 +102,17 @@ export default function About() {
 
           <div className="space-y-5 text-base leading-relaxed text-bone/75">
             <p>
-              I&apos;m Ishika, a software engineer and designer currently finishing my M.S. in Computer
-              Science at University of California, Davis. Previously at Novartis, I built and shipped
-              full-stack applications serving 4,000+ users and developed automation systems that reduced
-              reporting time by 96%.
+              I&apos;m Ishika — a software engineer and designer finishing my M.S. in Computer Science at
+              UC Davis. Previously at Novartis, I built full-stack systems serving 4,000+ users and
+              created automation that reduced reporting time by 96%.
             </p>
             <p>
-              Today, I&apos;m focused on agentic AI: building LLM-powered systems with structured outputs,
-              RAG pipelines, and tool orchestration, paired with interfaces that feel intuitive, polished,
-              and human. My latest project, SafeWalk, won Best AI Depth &amp; Integration at HackHayward
-              2026.
+              I care deeply about building software that feels thoughtful to use — not just technically
+              strong systems, but products that feel intuitive, polished, and human. Lately, that&apos;s
+              meant building AI-native experiences with LLMs, RAG pipelines, and agentic workflows. My
+              latest project, SafeWalk, won Best AI Depth &amp; Integration at HackHayward 2026.
             </p>
-            <p>
-              I care deeply about both the system and the experience — not just making things work, but
-              making them feel seamless to use.
-            </p>
-            <p>
-              Open to full-time software engineering roles starting Summer 2026. If you&apos;re building
-              thoughtful AI-native products and value engineers who care about product craftsmanship as
-              much as technical depth, I&apos;d love to connect.
-            </p>
+            <p>Open to full-time software engineering roles starting Summer 2026.</p>
           </div>
         </div>
       </div>

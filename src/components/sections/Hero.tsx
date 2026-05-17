@@ -1,11 +1,15 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
 import SplitText from "@/components/ui/SplitText";
 
 const ParticleField = dynamic(() => import("@/components/three/ParticleField"), {
+  ssr: false,
+});
+
+const RubiksCube = dynamic(() => import("@/components/three/RubiksCube"), {
   ssr: false,
 });
 
@@ -22,6 +26,23 @@ export default function Hero({ startReveal }: HeroProps) {
   const metaRef = useRef<HTMLDivElement>(null);
   const scrollHintRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
+  const cubeRef = useRef<HTMLDivElement>(null);
+  const [cubeSize, setCubeSize] = useState(460);
+
+  // Cube scales with viewport so it stays prominent without overflowing.
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      // Use the smaller of width/height bounds so the cube always fits
+      // inside the hero, then cap at a generous max for big monitors.
+      const next = Math.min(w * 0.65, h * 0.6, 560);
+      setCubeSize(Math.max(260, Math.round(next)));
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   // Sync initial hidden state BEFORE the first paint so no flash occurs
   useIsomorphicLayoutEffect(() => {
@@ -31,6 +52,7 @@ export default function Hero({ startReveal }: HeroProps) {
     gsap.set(metas, { opacity: 0, y: 8 });
     gsap.set(lineRef.current, { scaleY: 0, transformOrigin: "top" });
     gsap.set(scrollHintRef.current, { opacity: 0 });
+    gsap.set(cubeRef.current, { opacity: 0, y: 24 });
   }, []);
 
   useEffect(() => {
@@ -60,6 +82,11 @@ export default function Hero({ startReveal }: HeroProps) {
         { opacity: 1, duration: 0.8 },
         "-=0.4"
       );
+      tl.to(
+        cubeRef.current,
+        { opacity: 1, y: 0, duration: 1.4, ease: "expo.out" },
+        "-=1.4"
+      );
     }, rootRef);
 
     return () => ctx.revert();
@@ -74,6 +101,16 @@ export default function Hero({ startReveal }: HeroProps) {
       {/* WebGL canvas */}
       <div className="absolute inset-0 z-0">
         <ParticleField />
+      </div>
+
+      {/* Interactive Rubik's-cube hero piece — centered focal point.
+          Outer wrapper handles centering via CSS transforms.
+          Inner wrapper (cubeRef) is what GSAP animates, so the two
+          transform stacks never fight. */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 z-[5] -translate-x-1/2 -translate-y-1/2">
+        <div ref={cubeRef}>
+          <RubiksCube size={cubeSize} />
+        </div>
       </div>
 
       {/* Hero content overlay */}

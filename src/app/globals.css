@@ -126,3 +126,92 @@ button,
 a {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* ─────────────────────────────────────────────
+   Rubik's cube (Hero)
+   Two stacked wrappers so bob + mouse rotation
+   animate independently without overriding.
+   ───────────────────────────────────────────── */
+@keyframes cubeBob {
+  0%,
+  100% {
+    transform: translateY(-8px);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes cubeAutoRotate {
+  0% {
+    transform: rotateX(15deg) rotateY(-20deg);
+  }
+  50% {
+    transform: rotateX(15deg) rotateY(160deg);
+  }
+  100% {
+    transform: rotateX(15deg) rotateY(340deg);
+  }
+}
+
+.cube-perspective {
+  position: relative;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+}
+
+.cube-bob {
+  animation: cubeBob 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+.cube-rotation {
+  transform-style: preserve-3d;
+  transform: rotateX(15deg) rotateY(-20deg);
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+.cube-shape {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.cube-face {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  padding: 10px;
+  /* Hollow — face has no fill so you can see through to the back. */
+  background: transparent;
+}
+
+.cube-cell {
+  border-radius: 4px;
+  /* Slick glass tile: a partly-opaque ink base hides most of the back-face
+     text, with a faint diagonal bone sheen on top for the glass feel.
+     Hairline border + top highlight + bottom shadow give the 3D edge. */
+  background:
+    linear-gradient(
+      135deg,
+      rgba(236, 234, 228, 0.12) 0%,
+      rgba(236, 234, 228, 0.04) 50%,
+      rgba(236, 234, 228, 0.12) 100%
+    ),
+    rgba(10, 10, 10, 0.88);
+  box-shadow:
+    inset 0 0 0 1px rgba(236, 234, 228, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cube-rotation {
+    animation: cubeAutoRotate 24s linear infinite;
+    transition: none;
+  }
+}

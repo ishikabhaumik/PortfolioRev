@@ -64,7 +64,7 @@ const roles: Role[] = [
 
 export default function Experience() {
   const ref = useRef<HTMLElement>(null);
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState<number>(-1);
 
   useEffect(() => {
     const el = ref.current;
@@ -92,9 +92,10 @@ export default function Experience() {
   return (
     <section ref={ref} id="experience" className="relative px-6 py-32 md:px-12 md:py-48">
       <SectionLabel
-        index="[04]"
+        index="[05]"
         label="Trajectory"
         title="Built Over Time."
+        subtitle="Software, design, and systems thinking — evolving together."
       />
 
       <ol className="flex flex-col border-t border-line">
