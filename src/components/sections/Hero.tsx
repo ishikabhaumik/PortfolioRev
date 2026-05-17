@@ -27,21 +27,54 @@ export default function Hero({ startReveal }: HeroProps) {
   const scrollHintRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
   const cubeRef = useRef<HTMLDivElement>(null);
-  const [cubeSize, setCubeSize] = useState(460);
+  const cubeFloatRef = useRef<HTMLDivElement>(null);
+  const [cubeSize, setCubeSize] = useState(294);
 
-  // Cube scales with viewport so it stays prominent without overflowing.
+  // Cube scales with viewport. All factors and the cap are another 20%
+  // smaller than the previous values.
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      // Use the smaller of width/height bounds so the cube always fits
-      // inside the hero, then cap at a generous max for big monitors.
-      const next = Math.min(w * 0.65, h * 0.6, 560);
-      setCubeSize(Math.max(260, Math.round(next)));
+      const next = Math.min(w * 0.416, h * 0.384, 358);
+      setCubeSize(Math.max(166, Math.round(next)));
     };
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
+  }, []);
+
+  // Slow, smooth, pseudo-random drift around the hero center.
+  // Two non-harmonic sine waves per axis combine into motion whose
+  // overall path doesn't repeat for a long time — looks random,
+  // but is mathematically continuous so it never jitters.
+  useEffect(() => {
+    const el = cubeFloatRef.current;
+    if (!el) return;
+    const start = performance.now();
+    let raf = 0;
+
+    const tick = (now: number) => {
+      const t = now - start;
+      // Drift radius — kept within hero bounds across viewport sizes.
+      const xRange = window.innerWidth * 0.22;
+      const yRange = window.innerHeight * 0.16;
+
+      // Long, coprime periods → looks random and slow.
+      const xRaw =
+        Math.sin(t / 18000) * 0.7 + Math.sin(t / 27000 + 1.3) * 0.4;
+      const yRaw =
+        Math.cos(t / 22000) * 0.7 + Math.sin(t / 31000 + 0.7) * 0.4;
+
+      const x = (xRaw / 1.1) * xRange;
+      const y = (yRaw / 1.1) * yRange;
+
+      el.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   // Sync initial hidden state BEFORE the first paint so no flash occurs
@@ -103,11 +136,17 @@ export default function Hero({ startReveal }: HeroProps) {
         <ParticleField />
       </div>
 
-      {/* Interactive Rubik's-cube hero piece — centered focal point.
-          Outer wrapper handles centering via CSS transforms.
-          Inner wrapper (cubeRef) is what GSAP animates, so the two
-          transform stacks never fight. */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 z-[5] -translate-x-1/2 -translate-y-1/2">
+      {/* Auto-rotating Rubik's-cube hero piece. Three nested wrappers:
+          - Floating wrapper (cubeFloatRef): RAF-driven sine drift around
+            the hero center — owns its own transform.
+          - GSAP wrapper (cubeRef): handles the entrance reveal.
+          - RubiksCube: spin + tilt + bob layers internally.
+          Each layer owns one transform so they never collide. */}
+      <div
+        ref={cubeFloatRef}
+        className="pointer-events-none absolute left-1/2 top-1/2 z-[5]"
+        style={{ transform: "translate(-50%, -50%)" }}
+      >
         <div ref={cubeRef}>
           <RubiksCube size={cubeSize} />
         </div>

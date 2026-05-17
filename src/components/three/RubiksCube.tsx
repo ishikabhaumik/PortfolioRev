@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { cn } from "@/lib/cn";
 
 interface RubiksCubeProps {
   /** Edge length of the cube in pixels. Drives all 3D math. */
@@ -9,66 +9,46 @@ interface RubiksCubeProps {
 }
 
 /**
- * 3D Rubik's-cube-style hero element.
+ * Hollow glass Rubik's-cube hero piece.
  *
- * Layout: a perspective wrapper holds two stacked transform wrappers so the
- * vertical "bob" animation and the cursor-driven rotation never fight for the
- * `transform` property.
+ *   .cube-perspective    (perspective + halo + ground shadow)
+ *     ├─ .cube-depth-glow   (600×600 radial halo, behind cube)
+ *     ├─ .cube-ground-shadow (blurred dark ellipse below cube)
+ *     └─ .cube-bob          (gentle 6s translateY breathe)
+ *         └─ .cube-spin     (continuous 18s linear rotateY auto-spin)
+ *             └─ .cube-tilt (corner-down balance: rotateX(35.26°) rotateZ(45°))
+ *                 └─ .cube-shape (preserve-3d, holds 6 faces × 9 tiles)
  *
- *   .cube-perspective  (perspective)
- *     └ .cube-bob         (translateY keyframes)
- *         └ .cube-rotation  (rotateX/rotateY from cursor)
- *             └ .cube-shape   (the 6 faces, preserve-3d)
- *
- * On touch devices, CSS swaps the cursor mapping for a slow auto-rotation.
+ * Each wrapper owns one transform layer so the corner tilt, the auto-spin,
+ * and the bob never override each other. The cube auto-rotates without
+ * cursor or click input.
  */
+
+const SYMBOL_LABELS = new Set([
+  "♩",
+  "♪",
+  "♫",
+  "♭",
+  "◦",
+  "—",
+  "~",
+  "◎",
+  "...",
+  "∞",
+  "↗️",
+  "∘",
+]);
+
+const CITY_LABELS = new Set([
+  "Seattle",
+  "New York",
+  "Chicago",
+  "Philadelphia",
+  "Dallas",
+  "Santa Barbara",
+]);
+
 export default function RubiksCube({ size = 360, className }: RubiksCubeProps) {
-  const rotationRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Skip on touch devices — CSS handles the auto-rotation fallback.
-    const isCoarse =
-      typeof window !== "undefined" &&
-      window.matchMedia("(hover: none), (pointer: coarse)").matches;
-    if (isCoarse) return;
-
-    const el = rotationRef.current;
-    if (!el) return;
-
-    const apply = (rx: number, ry: number) => {
-      el.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-    };
-
-    const onMove = (e: MouseEvent) => {
-      const x = e.clientX / window.innerWidth; // 0 → 1
-      const y = e.clientY / window.innerHeight; // 0 → 1
-      // Wider swing so the cube clearly responds to cursor movement.
-      // Mouse X across viewport → rotateY in [-55, +55]
-      // Mouse Y across viewport → rotateX in [+35, -35]
-      apply(35 - y * 70, -55 + x * 110);
-    };
-
-    // Smoothly return to the resting pose when the cursor leaves the page.
-    const onLeave = () => apply(15, -20);
-
-    window.addEventListener("mousemove", onMove);
-    document.addEventListener("mouseleave", onLeave);
-
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      document.removeEventListener("mouseleave", onLeave);
-    };
-  }, []);
-
-  const half = size / 2;
-
-  const faceBase: React.CSSProperties = {
-    width: size,
-    height: size,
-    top: 0,
-    left: 0,
-  };
-
   // 9 labels per face — read left-to-right, top-to-bottom across the
   // 3×3 grid. Order matches the spec the labels were authored against.
   const faceLabels: Record<string, string[]> = {
@@ -78,6 +58,15 @@ export default function RubiksCube({ size = 360, className }: RubiksCubeProps) {
     right: ["departure", "~", "annotate", "Philadelphia", "crema", "ache", "passage", "...", "map"],
     bottom: ["notebook", "arrival", "♪", "grounds", "Dallas", "unwritten", "linger", "third wave", "revise"],
     back: ["suitcase", "∞", "breathe", "overcast", "line break", "Santa Barbara", "steep", "somewhere", "silence"],
+  };
+
+  const half = size / 2;
+
+  const faceBase: React.CSSProperties = {
+    width: size,
+    height: size,
+    top: 0,
+    left: 0,
   };
 
   // Each face is positioned by translating its center half the cube edge
@@ -98,30 +87,52 @@ export default function RubiksCube({ size = 360, className }: RubiksCubeProps) {
       style={{ width: size, height: size }}
       aria-hidden
     >
+      {/* Soft halo of depth behind the cube. */}
+      <div className="cube-depth-glow" />
+
+      {/* Faint blurred ground shadow — scales with the cube and sits below
+          its corner-down bottom vertex so the cube feels grounded. */}
+      <div
+        className="cube-ground-shadow"
+        style={{
+          top: `calc(100% + ${Math.round(size * 0.32)}px)`,
+          width: `${Math.round(size * 0.7)}px`,
+          height: `${Math.round(size * 0.08)}px`,
+        }}
+      />
+
       <div className="cube-bob" style={{ width: size, height: size }}>
-        <div
-          ref={rotationRef}
-          className="cube-rotation"
-          style={{ width: size, height: size }}
-        >
-          <div
-            className="cube-shape"
-            style={{ width: size, height: size }}
-          >
-            {faces.map((face) => (
-              <div key={face.key} className="cube-face" style={face.style}>
-                {faceLabels[face.key].map((label, i) => (
-                  <div
-                    key={i}
-                    className="cube-cell flex items-center justify-center px-1"
-                  >
-                    <span className="select-none break-words text-center font-mono text-[12px] leading-[1.15] tracking-[0.02em] text-bone/80 md:text-[14px]">
-                      {label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ))}
+        <div className="cube-spin" style={{ width: size, height: size }}>
+          <div className="cube-tilt" style={{ width: size, height: size }}>
+            <div className="cube-shape" style={{ width: size, height: size }}>
+              {faces.map((face) => (
+                <div key={face.key} className="cube-face" style={face.style}>
+                  {faceLabels[face.key].map((label, i) => {
+                    const isSymbol = SYMBOL_LABELS.has(label);
+                    const isCity = CITY_LABELS.has(label);
+                    return (
+                      <div
+                        key={i}
+                        className="cube-cell flex items-center justify-center px-1"
+                      >
+                        <span
+                          className={cn(
+                            "select-none break-words text-center font-mono text-[12px] leading-[1.15] md:text-[14px]",
+                            // Symbols recede behind words and city names
+                            // (current text-bone/80 minus 0.08 → 0.72).
+                            isSymbol ? "text-bone/[0.72]" : "text-bone/80",
+                            // Cities get more deliberate spacing.
+                            isCity ? "tracking-[0.1em]" : "tracking-[0.02em]"
+                          )}
+                        >
+                          {label}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
