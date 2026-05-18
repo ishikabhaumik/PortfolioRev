@@ -218,13 +218,47 @@ a {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 10px;
-  padding: 10px;
-  /* Hollow — face has no fill so you can see through to the back. */
-  background: transparent;
+  gap: 2px;
+  padding: 0;
+  /* Same stack as `.cube-cell` base so grid gaps match tiles; fully opaque behind cells. */
+  background:
+    linear-gradient(
+      135deg,
+      rgba(236, 234, 228, 0.12) 0%,
+      rgba(236, 234, 228, 0.04) 50%,
+      rgba(236, 234, 228, 0.12) 100%
+    ),
+    #0a0a0a;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Overhead-right lighting: unified tint per face tile + gap; tile bg rules untouched. */
+.cube-face-top::after,
+.cube-face-right::after,
+.cube-face-left::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cube-face-top::after {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cube-face-right::after {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.cube-face-left::after {
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .cube-cell {
+  position: relative;
+  z-index: 2;
   border-radius: 4px;
   /* Etched panel of dark glass: opaque ink base + faint diagonal bone sheen.
      A single hairline border (no chunky highlight/shadow) keeps the tiles

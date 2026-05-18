@@ -71,6 +71,8 @@ export default function RubiksCube({
   };
 
   const half = size / 2;
+  /** Slight outward nudge (~1 px) seals sub-pixel seams where browsers show void between adjoining face planes */
+  const z = half + 1;
 
   const faceBase: React.CSSProperties = {
     width: size,
@@ -79,16 +81,17 @@ export default function RubiksCube({
     left: 0,
   };
 
-  // Each face is positioned by translating its center half the cube edge
-  // outward along the appropriate axis, then rotated to face out.
+  // Each face is positioned by translating outward along each axis beyond
+  // the cube center by half edge length (+ 1 px) so planes meet cleanly
+  // (see `z`).
   // 6 faces × 9 tiles = 54 hollow glass tiles.
   const faces: { key: string; style: React.CSSProperties }[] = [
-    { key: "front", style: { ...faceBase, transform: `translateZ(${half}px)` } },
-    { key: "right", style: { ...faceBase, transform: `rotateY(90deg) translateZ(${half}px)` } },
-    { key: "top", style: { ...faceBase, transform: `rotateX(90deg) translateZ(${half}px)` } },
-    { key: "back", style: { ...faceBase, transform: `rotateY(180deg) translateZ(${half}px)` } },
-    { key: "left", style: { ...faceBase, transform: `rotateY(-90deg) translateZ(${half}px)` } },
-    { key: "bottom", style: { ...faceBase, transform: `rotateX(-90deg) translateZ(${half}px)` } },
+    { key: "front", style: { ...faceBase, transform: `translateZ(${z}px)` } },
+    { key: "right", style: { ...faceBase, transform: `rotateY(90deg) translateZ(${z}px)` } },
+    { key: "top", style: { ...faceBase, transform: `rotateX(90deg) translateZ(${z}px)` } },
+    { key: "back", style: { ...faceBase, transform: `rotateY(180deg) translateZ(${z}px)` } },
+    { key: "left", style: { ...faceBase, transform: `rotateY(-90deg) translateZ(${z}px)` } },
+    { key: "bottom", style: { ...faceBase, transform: `rotateX(-90deg) translateZ(${z}px)` } },
   ];
 
   return (
@@ -120,7 +123,11 @@ export default function RubiksCube({
           <div className="cube-tilt" style={{ width: size, height: size }}>
             <div className="cube-shape" style={{ width: size, height: size }}>
               {faces.map((face) => (
-                <div key={face.key} className="cube-face" style={face.style}>
+                <div
+                  key={face.key}
+                  className={`cube-face cube-face-${face.key}`}
+                  style={face.style}
+                >
                   {faceLabels[face.key].map((label, i) => {
                     const isSymbol = SYMBOL_LABELS.has(label);
                     const isCity = CITY_LABELS.has(label);
