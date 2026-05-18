@@ -10,12 +10,18 @@ type Props = {
   strength?: number;
   as?: "button" | "a";
   href?: string;
+  /** Only used when `as` is `"button"`. Defaults to `"button"` so forms must opt into `"submit"`. */
+  buttonType?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
+  disabled?: boolean;
   onClick?: (e: React.MouseEvent) => void;
   ariaLabel?: string;
+  /** Only applied when `as` is `"a"`. */
+  target?: React.HTMLAttributeAnchorTarget;
+  rel?: string;
 };
 
 const MagneticButton = forwardRef<HTMLElement, Props>(function MagneticButton(
-  { children, className, strength = 0.35, as = "button", href, onClick, ariaLabel },
+  { children, className, strength = 0.35, as = "button", href, buttonType = "button", disabled, onClick, ariaLabel, target, rel },
   ref
 ) {
   const elRef = useRef<HTMLElement | null>(null);
@@ -62,6 +68,8 @@ const MagneticButton = forwardRef<HTMLElement, Props>(function MagneticButton(
       <a
         ref={setRef as any}
         href={href}
+        target={target}
+        rel={rel}
         aria-label={ariaLabel}
         className={baseClass}
         data-cursor="open"
@@ -81,7 +89,8 @@ const MagneticButton = forwardRef<HTMLElement, Props>(function MagneticButton(
       className={baseClass}
       data-cursor="open"
       onClick={onClick}
-      type="button"
+      type={buttonType}
+      disabled={disabled}
     >
       <span ref={innerRef} className="inline-flex items-center will-change-transform">
         {children}

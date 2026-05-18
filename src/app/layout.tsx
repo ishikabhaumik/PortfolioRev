@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { fontSerif, fontSans, fontMono } from "@/lib/fonts";
+import { fontSerif, fontSans, fontMono, fontBlock } from "@/lib/fonts";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import "./globals.css";
 
@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fontSerif.variable} ${fontSans.variable} ${fontMono.variable}`}
+      className={`${fontSerif.variable} ${fontSans.variable} ${fontMono.variable} ${fontBlock.variable}`}
     >
       <body className="bg-ink text-bone font-sans antialiased vignette">
         <SmoothScroll />

@@ -102,12 +102,12 @@ export default function About() {
 
           <div className="space-y-5 text-base leading-relaxed text-bone/75">
             <p>
-              I&apos;m Ishika — a software engineer and designer finishing my M.S. in Computer Science at
-              UC Davis. Previously at Novartis, I built full-stack systems serving 4,000+ users and
+              I&apos;m Ishika, a software engineer and designer finishing my M.S. in Computer Science at
+              UC Davis. Previously at Novartis one of the largest multinational pharmaceutical and healthcare corporations in the world , I built full-stack systems serving 4,000+ users and
               created automation that reduced reporting time by 96%.
             </p>
             <p>
-              I care deeply about building software that feels thoughtful to use — not just technically
+              I care deeply about building software that feels thoughtful to use, not just technically
               strong systems, but products that feel intuitive, polished, and human. Lately, that&apos;s
               meant building AI-native experiences with LLMs, RAG pipelines, and agentic workflows. My
               latest project, SafeWalk, won Best AI Depth &amp; Integration at HackHayward 2026.

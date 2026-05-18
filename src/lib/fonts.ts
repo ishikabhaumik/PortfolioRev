@@ -1,4 +1,12 @@
-import { Cormorant_Garamond, DM_Mono, DM_Sans } from "next/font/google";
+import { Bebas_Neue, Cormorant_Garamond, DM_Mono, DM_Sans } from "next/font/google";
+
+/** Condensed uppercase display — preloader block letters */
+export const fontBlock = Bebas_Neue({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-block",
+  display: "swap",
+});
 
 export const fontSerif = Cormorant_Garamond({
   subsets: ["latin"],

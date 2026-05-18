@@ -11,11 +11,26 @@ const categories: { title: string; items: string[] }[] = [
   },
   {
     title: "Frontend",
-    items: ["React", "Next.js", "React Native", "Tailwind CSS", "GSAP", "Component Architecture"],
+    items: [
+      "React",
+      "Next.js",
+      "React Native",
+      "Tailwind CSS",
+      "Component Architecture",
+      "State Management",
+    ],
   },
   {
-    title: "Backend & APIs",
-    items: ["Node.js", "FastAPI", "Spring Boot", "REST", "GraphQL", "PostgreSQL", "Redis"],
+    title: "Backend",
+    items: [
+      "Node.js",
+      "FastAPI",
+      "Spring Boot",
+      "REST APIs",
+      "GraphQL",
+      "Microservices",
+      "API Design",
+    ],
   },
   {
     title: "AI & Agents",
@@ -24,14 +39,27 @@ const categories: { title: string; items: string[] }[] = [
       "Agentic Workflows",
       "RAG",
       "Prompt Engineering",
+      "Context Engineering",
       "Tool Calling",
       "Structured Outputs",
       "Evals",
+      "AI-assisted Development (Claude Code, Cursor)",
     ],
   },
   {
     title: "Cloud & Infra",
-    items: ["AWS (EC2, S3, Lambda)", "Docker", "Kubernetes", "CI/CD", "Vercel"],
+    items: [
+      "AWS (EC2, S3, Lambda)",
+      "Docker",
+      "Kubernetes",
+      "CI/CD Pipelines",
+      "PostgreSQL",
+      "Redis",
+    ],
+  },
+  {
+    title: "Tools & Practices",
+    items: ["Git", "Agile", "Code Reviews", "Unit & Integration Testing", "Technical Documentation"],
   },
 ];
 

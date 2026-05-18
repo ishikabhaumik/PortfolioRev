@@ -32,7 +32,7 @@ const projects: Project[] = [
   {
     index: "02",
     title: "WaitWhat.ai",
-    client: "Personal Project",
+    client: " A SB Hacks Build",
     category: "LLM Workflow · Agentic",
     year: "'25",
     gradient:
@@ -53,8 +53,8 @@ const projects: Project[] = [
   },
   {
     index: "04",
-    title: "Gas-Fee Mechanism, ResilientDB",
-    client: "UC Davis · Research",
+    title: "Gas-Fee Mechanism - ResilientDB",
+    client: "UC Davis · Open Source Contribution",
     category: "Distributed Systems · BFT",
     year: "'24",
     gradient:

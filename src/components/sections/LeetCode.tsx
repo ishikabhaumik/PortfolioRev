@@ -8,7 +8,7 @@ import SplitText from "@/components/ui/SplitText";
 const stats: { label: string; value: string }[] = [
   { label: "Cadence", value: "Daily" },
   { label: "Focus", value: "Algorithms · Data Structures" },
-  { label: "Languages", value: "Python · C++ · Java" },
+  { label: "Languages", value: "C++" },
   { label: "Patterns", value: "DP · Graphs · Trees" },
 ];
 
@@ -63,7 +63,7 @@ export default function LeetCode() {
         index="[04]"
         label="Practice"
         title="Problem solving, as a daily ritual."
-        subtitle="The quiet discipline behind the shipped work — staying sharp on algorithms, data structures, and the small joy of an elegant solution."
+        subtitle="The quiet discipline behind the work — staying sharp on algorithms, data structures, and the small joy of an elegant solution."
       />
 
       <div className="grid grid-cols-1 gap-16 md:grid-cols-12 md:gap-16">
@@ -87,14 +87,13 @@ export default function LeetCode() {
           </blockquote>
 
           <p className="mt-10 max-w-xl text-base leading-relaxed text-bone/70">
-            LeetCode is where I keep the thinking muscles warm — outside of features
-            and product work. Daily reps on patterns, edge cases, and elegant
+            Daily reps on patterns, edge cases, and elegant
             simplifications that quietly carry over to every system I build.
           </p>
 
           <div className="mt-10" data-cta>
             <a
-              href="https://leetcode.com/u/ishikabhaumik/"
+              href="https://leetcode.com/u/bhaumikiman26"
               target="_blank"
               rel="noopener noreferrer"
               data-cursor="open"

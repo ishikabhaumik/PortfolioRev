@@ -34,7 +34,7 @@ export default function LogoMorph({ onComplete }: LogoMorphProps) {
       const lastLetters = lastNameRef.current?.querySelectorAll("span") ?? [];
       const allLetters = [...firstLetters, ...lastLetters];
 
-      gsap.set(allLetters, { y: 60, opacity: 0 });
+      gsap.set(allLetters, { y: 110, opacity: 0 });
       gsap.set(lineRef.current, { scaleX: 0, transformOrigin: "left center" });
       gsap.set(counterRef.current, { opacity: 0 });
 
@@ -144,39 +144,37 @@ export default function LogoMorph({ onComplete }: LogoMorphProps) {
       <div ref={bottomPanelRef} className="absolute inset-x-0 bottom-0 h-1/2 bg-ink" />
 
       {/* Center content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-        {/* First name */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 md:gap-7">
+        {/* Block letters — Bebas Neue, all caps */}
         <div
           ref={firstNameRef}
-          className="flex overflow-hidden"
+          className="flex justify-center gap-x-1 overflow-hidden uppercase sm:gap-x-2 md:gap-x-3"
           aria-label={FIRST}
         >
-          {FIRST.split("").map((ch, i) => (
+          {FIRST.toUpperCase().split("").map((ch, i) => (
             <span
               key={i}
-              className="inline-block font-serif text-5xl md:text-7xl tracking-widest text-bone"
+              className="inline-block font-block text-display-lg leading-none tracking-[0.04em] text-bone antialiased md:text-display-xl md:tracking-[0.06em]"
             >
               {ch}
             </span>
           ))}
         </div>
 
-        {/* Thin divider line */}
         <div
           ref={lineRef}
-          className="w-40 md:w-56 h-px bg-bone/40"
+          className="h-px w-[min(18rem,70vw)] max-w-xl bg-gradient-to-r from-transparent via-bone/55 to-transparent"
         />
 
-        {/* Last name */}
         <div
           ref={lastNameRef}
-          className="flex overflow-hidden"
+          className="flex justify-center gap-x-1 overflow-hidden uppercase sm:gap-x-2 md:gap-x-3"
           aria-label={LAST}
         >
-          {LAST.split("").map((ch, i) => (
+          {LAST.toUpperCase().split("").map((ch, i) => (
             <span
               key={i}
-              className="inline-block font-serif text-5xl md:text-7xl tracking-widest text-bone"
+              className="inline-block font-block text-display-lg leading-none tracking-[0.04em] text-bone antialiased md:text-display-xl md:tracking-[0.06em]"
             >
               {ch}
             </span>
@@ -186,7 +184,7 @@ export default function LogoMorph({ onComplete }: LogoMorphProps) {
         {/* Counter */}
         <div
           ref={counterRef}
-          className="mt-6 font-mono text-xs tracking-[0.5em] text-bone/50 uppercase"
+          className="mt-4 font-mono text-[11px] uppercase tracking-[0.45em] text-bone/45 md:text-xs md:tracking-[0.5em]"
         >
           000
         </div>

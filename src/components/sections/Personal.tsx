@@ -52,8 +52,8 @@ const pursuits: { title: string; blurb: string; label: string }[] = [
     blurb: "A slow, deliberate ritual — beans, water, patience.",
   },
   {
-    label: "Movement",
-    title: "Dancing",
+    label: "Come as you are",
+    title: "Dancing and Gyming",
     blurb: "The fastest way to reset and feel like myself again.",
   },
   {
@@ -125,7 +125,7 @@ export default function Personal() {
         index="[06]"
         label="Off the clock"
         title="What keeps the work honest."
-        subtitle="The hours that don't ship anything — but quietly inform everything that does."
+        subtitle="The hours away from the keyboard that quietly inform everything that I create."
       />
 
       <div className="grid grid-cols-1 gap-16 md:grid-cols-12 md:gap-16">
@@ -134,10 +134,15 @@ export default function Personal() {
           <div className="relative aspect-[3/4] w-full overflow-hidden">
             <img
               src="/portrait-2.png"
-              alt="Ishika in New York"
+              alt="Ishika in Davis, California"
               className="h-full w-full object-cover object-center"
             />
             <div className="pointer-events-none absolute inset-3 border border-bone/10" />
+            <div className="absolute bottom-4 left-4">
+              <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.85)]">
+                Davis · March 2026
+              </span>
+            </div>
           </div>
 
           <blockquote className="font-serif text-3xl font-light leading-snug text-bone md:text-4xl md:leading-[1.15]">

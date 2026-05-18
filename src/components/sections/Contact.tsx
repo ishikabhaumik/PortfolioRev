@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SplitText from "@/components/ui/SplitText";
 import MagneticButton from "@/components/ui/MagneticButton";
-import { sendContactMessage } from "@/app/actions/contact";
+
+const RESUME_URL = "https://ishikabhaumik.github.io/Resume.pdf";
 
 const socials = [
   { label: "LinkedIn", href: "https://linkedin.com/in/ishika-bhaumik" },
@@ -14,10 +15,6 @@ const socials = [
 
 export default function Contact() {
   const ref = useRef<HTMLElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
-  const [pending, setPending] = useState(false);
-  const [status, setStatus] = useState<null | "ok" | "error">(null);
-  const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
     const el = ref.current;
@@ -40,30 +37,6 @@ export default function Contact() {
     return () => ctx.revert();
   }, []);
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!formRef.current) return;
-    const fd = new FormData(formRef.current);
-    setPending(true);
-    setStatus(null);
-    try {
-      const res = await sendContactMessage(fd);
-      if (res.ok) {
-        setStatus("ok");
-        setMessage(res.message);
-        formRef.current.reset();
-      } else {
-        setStatus("error");
-        setMessage(res.message);
-      }
-    } catch (err) {
-      setStatus("error");
-      setMessage("Something went wrong sending the message. Email me instead.");
-    } finally {
-      setPending(false);
-    }
-  };
-
   return (
     <section
       ref={ref}
@@ -77,7 +50,7 @@ export default function Contact() {
       </div>
 
       <div className="grid grid-cols-1 gap-16 md:grid-cols-12 md:gap-12">
-        {/* Left: massive serif statement */}
+        {/* Left: statement + Gmail */}
         <div className="md:col-span-7">
           <h2 className="font-serif text-display-lg font-light leading-[0.95] text-bone">
             <SplitText text="Let's build" by="word" stagger={0.06} className="block" />
@@ -111,80 +84,28 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* Right: form */}
-        <form
-          ref={formRef}
-          onSubmit={onSubmit}
-          className="flex flex-col gap-8 md:col-span-5 md:pt-4"
-          data-cursor="text"
-        >
-          <div className="flex flex-col gap-2" data-c-anim>
-            <label htmlFor="name" className="font-mono text-[10px] uppercase tracking-[0.4em] text-bone/40">
-              Your name
-            </label>
-            <input
-              id="name"
-              name="name"
-              required
-              autoComplete="name"
-              className="w-full border-0 border-b border-bone/20 bg-transparent py-3 font-serif text-2xl text-bone outline-none placeholder:text-bone/30 focus:border-bone"
-              placeholder="Ada Lovelace"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2" data-c-anim>
-            <label htmlFor="email" className="font-mono text-[10px] uppercase tracking-[0.4em] text-bone/40">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autoComplete="email"
-              className="w-full border-0 border-b border-bone/20 bg-transparent py-3 font-serif text-2xl text-bone outline-none placeholder:text-bone/30 focus:border-bone"
-              placeholder="you@studio.com"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2" data-c-anim>
-            <label htmlFor="message" className="font-mono text-[10px] uppercase tracking-[0.4em] text-bone/40">
-              Project brief
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              required
-              rows={4}
-              className="w-full resize-none border-0 border-b border-bone/20 bg-transparent py-3 font-serif text-xl text-bone outline-none placeholder:text-bone/30 focus:border-bone"
-              placeholder="Tell me about it…"
-            />
-          </div>
-
-          <div className="flex items-center justify-between pt-4" data-c-anim>
+        {/* Right: resume */}
+        <div className="flex flex-col gap-6 md:col-span-5 md:justify-end md:pt-4">
+          <span data-c-anim className="font-mono text-[10px] uppercase tracking-[0.4em] text-bone/40">
+            Résumé
+          </span>
+          <p data-c-anim className="max-w-md font-serif text-xl leading-snug text-bone/65 md:text-2xl">
+            PDF overview of experience and projects — opens in a new tab.
+          </p>
+          <div data-c-anim className="pt-2">
             <MagneticButton
-              as="button"
-              ariaLabel="Send message"
-              className="group relative overflow-hidden rounded-full border border-bone px-7 py-3 font-mono text-[11px] uppercase tracking-[0.35em] text-bone transition-colors duration-700 hover:text-ink"
+              as="a"
+              href={RESUME_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              ariaLabel="Download résumé as PDF"
+              className="group relative inline-flex overflow-hidden rounded-full border border-bone px-7 py-3 font-mono text-[11px] uppercase tracking-[0.35em] text-bone transition-colors duration-700 hover:text-ink"
             >
-              <span className="relative z-10">
-                {pending ? "Sending…" : "Send message"}
-              </span>
+              <span className="relative z-10">Download résumé</span>
               <span className="absolute inset-0 -z-0 origin-bottom scale-y-0 bg-bone transition-transform duration-700 ease-elegant group-hover:scale-y-100" />
             </MagneticButton>
-
-            {status && (
-              <span
-                className={
-                  "font-mono text-[10px] uppercase tracking-[0.4em] " +
-                  (status === "ok" ? "text-bone" : "text-red-400")
-                }
-              >
-                {message}
-              </span>
-            )}
           </div>
-        </form>
+        </div>
       </div>
 
       {/* Footer */}
@@ -197,8 +118,9 @@ export default function Contact() {
             <a
               key={s.label}
               href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
+              {...(s.href.startsWith("mailto:")
+                ? {}
+                : { target: "_blank", rel: "noopener noreferrer" })}
               data-cursor="open"
               className="transition-colors hover:text-bone"
             >
