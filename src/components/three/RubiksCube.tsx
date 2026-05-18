@@ -30,21 +30,6 @@ interface RubiksCubeProps {
  * cursor or click input.
  */
 
-const SYMBOL_LABELS = new Set([
-  "♩",
-  "♪",
-  "♫",
-  "♭",
-  "◦",
-  "—",
-  "~",
-  "◎",
-  "...",
-  "∞",
-  "↗️",
-  "∘",
-]);
-
 const CITY_LABELS = new Set([
   "Seattle",
   "New York",
@@ -129,21 +114,22 @@ export default function RubiksCube({
                   style={face.style}
                 >
                   {faceLabels[face.key].map((label, i) => {
-                    const isSymbol = SYMBOL_LABELS.has(label);
                     const isCity = CITY_LABELS.has(label);
+                    const walnutPrimary =
+                      (Math.floor(i / 3) + (i % 3)) % 2 === 0;
                     return (
                       <div
                         key={i}
-                        className="cube-cell flex items-center justify-center px-1"
+                        className={cn(
+                          "cube-cell flex items-center justify-center px-1",
+                          walnutPrimary ? "cube-cell-primary" : "cube-cell-alt",
+                        )}
                       >
                         <span
                           className={cn(
-                            "select-none break-words text-center font-mono text-[12px] leading-[1.15] md:text-[14px]",
-                            // +15% brightness: words 0.80 → 0.92,
-                            // symbols 0.72 → 0.83. Symbols still recede.
-                            isSymbol ? "text-bone/[0.83]" : "text-bone/[0.92]",
+                            "select-none break-words text-center font-mono text-[12px] leading-[1.15] md:text-[14px] text-[#7eb8c9]",
                             // Cities get more deliberate spacing.
-                            isCity ? "tracking-[0.1em]" : "tracking-[0.02em]"
+                            isCity ? "tracking-[0.1em]" : "tracking-[0.02em]",
                           )}
                         >
                           {label}

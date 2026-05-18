@@ -161,10 +161,8 @@ a {
 .cube-bob {
   position: relative;
   animation: cubeBob 6s ease-in-out infinite;
-  /* Faint white halo around the cube's outer silhouette — like a glass
-     object catching ambient light. Applied here so it traces the rendered
-     cube as a whole, not each individual tile. */
-  filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.15));
+  /* Faint icy blue halo — ambient rim light matching bokeh tones. */
+  filter: drop-shadow(0px 0px 4px rgba(126, 184, 201, 0.18));
   will-change: transform;
 }
 
@@ -220,20 +218,13 @@ a {
   grid-template-rows: repeat(3, 1fr);
   gap: 2px;
   padding: 0;
-  /* Same stack as `.cube-cell` base so grid gaps match tiles; fully opaque behind cells. */
-  background:
-    linear-gradient(
-      135deg,
-      rgba(236, 234, 228, 0.12) 0%,
-      rgba(236, 234, 228, 0.04) 50%,
-      rgba(236, 234, 228, 0.12) 100%
-    ),
-    #0a0a0a;
+  /* Fills 2px grid gaps — aligns with primary ocean tile. */
+  background: #1c2b35;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
-/* Overhead-right lighting: unified tint per face tile + gap; tile bg rules untouched. */
+/* Overhead-right lighting: overlays sit above face + checkerboard tint. */
 .cube-face-top::after,
 .cube-face-right::after,
 .cube-face-left::after {
@@ -245,34 +236,30 @@ a {
 }
 
 .cube-face-top::after {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .cube-face-right::after {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .cube-face-left::after {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(0, 0, 0, 0.12);
 }
 
 .cube-cell {
   position: relative;
   z-index: 2;
   border-radius: 4px;
-  /* Etched panel of dark glass: opaque ink base + faint diagonal bone sheen.
-     A single hairline border (no chunky highlight/shadow) keeps the tiles
-     reading as panels rather than separate raised blocks. */
-  background:
-    linear-gradient(
-      135deg,
-      rgba(236, 234, 228, 0.12) 0%,
-      rgba(236, 234, 228, 0.04) 50%,
-      rgba(236, 234, 228, 0.12) 100%
-    ),
-    #0a0a0a;
-  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+}
+
+.cube-cell-primary {
+  background: #1c2b35;
+  box-shadow: inset 0 0 0 0.5px rgba(126, 184, 201, 0.12);
+}
+
+.cube-cell-alt {
+  background: #152028;
+  box-shadow: inset 0 0 0 0.5px rgba(126, 184, 201, 0.12);
 }
 
