@@ -26,6 +26,7 @@ const config: Config = {
         sans: ["var(--font-sans)", "DM Sans", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "DM Mono", "ui-monospace", "monospace"],
         block: ["var(--font-block)", "Bebas Neue", "Impact", "sans-serif"],
+        montserrat: ["var(--font-montserrat)", "Montserrat", "system-ui", "sans-serif"],
       },
       fontSize: {
         "display-xl": ["clamp(5rem, 14vw, 14rem)", { lineHeight: "0.9", letterSpacing: "-0.04em" }],

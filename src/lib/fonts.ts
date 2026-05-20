@@ -1,4 +1,18 @@
-import { Bebas_Neue, Cormorant_Garamond, DM_Mono, DM_Sans } from "next/font/google";
+import {
+  Bebas_Neue,
+  Cormorant_Garamond,
+  DM_Mono,
+  DM_Sans,
+  Montserrat,
+} from "next/font/google";
+
+/** Thin sans — loading nameplate stacks (Cormorant I + Montserrat lines) */
+export const fontMontserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["200", "300"],
+  variable: "--font-montserrat",
+  display: "swap",
+});
 
 /** Condensed uppercase display — preloader block letters */
 export const fontBlock = Bebas_Neue({

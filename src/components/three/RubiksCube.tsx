@@ -34,7 +34,7 @@ const CITY_LABELS = new Set([
   "Seattle",
   "New York",
   "Chicago",
-  "Philadelphia",
+  "Phili",
   "Dallas",
   "Santa Barbara",
 ]);
@@ -47,12 +47,12 @@ export default function RubiksCube({
   // 9 labels per face — read left-to-right, top-to-bottom across the
   // 3×3 grid. Order matches the spec the labels were authored against.
   const faceLabels: Record<string, string[]> = {
-    top: ["Seattle", "dusk", "verse", "steep", "wandering", "—", "margins", "still", "bitter"],
-    left: ["layover", "New York", "draft", "solitude", "♩", "roam", "espresso", "unnamed", "longing"],
-    front: ["window seat", "stanza", "Chicago", "◦", "ritual", "fog", "between", "restless", "pour"],
-    right: ["departure", "~", "annotate", "Philadelphia", "crema", "ache", "passage", "...", "map"],
-    bottom: ["notebook", "arrival", "♪", "grounds", "Dallas", "unwritten", "linger", "third wave", "revise"],
-    back: ["suitcase", "∞", "breathe", "overcast", "line break", "Santa Barbara", "steep", "somewhere", "silence"],
+    top: ["Seattle", "dusk", "expose", "develop", "wander", "—", "margins", "minor", "bitter"],
+    left: ["layover", "New York", "draft", "alone", "♩", "chroma", "shots", "unnamed", "longing"],
+    front: ["Run", "stanza", "Chicago", "◦", "ritual", "doppio", "between", "tense", "shutter"],
+    right: ["depart", "~", "note", "Phili", "crema", "ache", "void", "...", "develop"],
+    bottom: ["journal", "arrival", "♪", "grounds", "Dallas", "burned", "linger", "pour", "revise"],
+    back: ["bag", "∞", "breathe", "overcast", "break", "Santa Barbara", "latent", "someday", "silence"],
   };
 
   const half = size / 2;
