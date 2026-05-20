@@ -40,7 +40,7 @@ const CITY_LABELS = new Set([
 ]);
 
 export default function RubiksCube({
-  size = 360,
+  size = 288,
   className,
   bare = false,
 }: RubiksCubeProps) {
@@ -127,7 +127,7 @@ export default function RubiksCube({
                       >
                         <span
                           className={cn(
-                            "select-none break-words text-center font-mono text-[12px] leading-[1.15] md:text-[14px] text-[#7eb8c9]",
+                            "select-none break-words text-center font-mono text-[9.6px] leading-[1.15] md:text-[11.2px] text-[#7eb8c9]",
                             // Cities get more deliberate spacing.
                             isCity ? "tracking-[0.1em]" : "tracking-[0.02em]",
                           )}

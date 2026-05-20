@@ -326,7 +326,7 @@ a {
   gap: 2px;
   padding: 0;
   /* Fills 2px grid gaps — aligns with primary ocean tile. */
-  background: #1c2b35;
+  background: #223442;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -361,12 +361,12 @@ a {
 }
 
 .cube-cell-primary {
-  background: #1c2b35;
+  background: #223442;
   box-shadow: inset 0 0 0 0.5px rgba(126, 184, 201, 0.12);
 }
 
 .cube-cell-alt {
-  background: #152028;
+  background: #1a2d38;
   box-shadow: inset 0 0 0 0.5px rgba(126, 184, 201, 0.12);
 }
 

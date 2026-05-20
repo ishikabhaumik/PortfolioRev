@@ -28,16 +28,15 @@ export default function Hero({ startReveal }: HeroProps) {
   const lineRef = useRef<HTMLDivElement>(null);
   const cubeRef = useRef<HTMLDivElement>(null);
   const cubeFloatRef = useRef<HTMLDivElement>(null);
-  const [cubeSize, setCubeSize] = useState(294);
+  const [cubeSize, setCubeSize] = useState(235);
 
-  // Cube scales with viewport. All factors and the cap are another 20%
-  // smaller than the previous values.
+  // Cube scales with viewport. Reduced a further ~20 % from prior tuning.
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const next = Math.min(w * 0.416, h * 0.384, 358);
-      setCubeSize(Math.max(166, Math.round(next)));
+      const next = Math.min(w * 0.333, h * 0.307, 286);
+      setCubeSize(Math.max(133, Math.round(next)));
     };
     update();
     window.addEventListener("resize", update);
