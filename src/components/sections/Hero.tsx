@@ -181,8 +181,14 @@ export default function Hero({ startReveal }: HeroProps) {
       <div className="relative z-10 flex h-full flex-col justify-between px-6 pb-12 pt-28 md:px-12 md:pb-16 md:pt-32">
         {/* Top meta row */}
         <div ref={metaRef} className="flex w-full items-start justify-between text-[10px] uppercase tracking-[0.4em] text-bone/55 md:text-xs">
-          <div data-meta className="max-w-[18ch] leading-relaxed">
-            <span className="text-bone">[01]</span> Portfolio
+          <div className="flex max-w-[22ch] flex-col gap-2 leading-relaxed">
+            <div data-meta className="flex flex-col gap-0.5">
+              <span className="text-bone">[01]</span>
+              <span>Portfolio</span>
+            </div>
+            <p data-meta className="hero-open-badge font-sans normal-case tracking-[0.18em] text-bone/70">
+              Open to work starting Aug 26
+            </p>
           </div>
           <div data-meta className="hidden md:block max-w-[22ch] text-right leading-relaxed">
             Davis, California

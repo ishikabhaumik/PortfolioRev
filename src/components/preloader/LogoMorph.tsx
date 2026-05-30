@@ -6,11 +6,6 @@ interface LogoMorphProps {
   onComplete?: () => void;
 }
 
-/** Entire block begins exit fade at this time (ms from mount). */
-const EXIT_START_MS = 2750;
-/** Hard stop if exit animation / `animationend` never fires. */
-const EXIT_FALLBACK_MS = 3740;
-
 /** Latin spelling — explicit ASCII capital I + “shika” (English only). */
 const ISHIKA_LATIN = `\u0049shika`;
 
@@ -31,7 +26,22 @@ const ISHIKA_LANGUAGES = [
   { lang: "Bengali", code: "bn", text: "ইশিকা", dir: "ltr" as const },
 ] as const;
 
-const NAME_STEP_MS = Math.floor(EXIT_START_MS / ISHIKA_LANGUAGES.length);
+/** Uniform visible hold per language (ms), excluding the pop-in animation. */
+const LANG_DWELL_MS = 302;
+/** English Ishika hold (ms). */
+const ENGLISH_DWELL_MS = 1000;
+
+function getLangDwellMs(index: number): number {
+  return index === 0 ? ENGLISH_DWELL_MS : LANG_DWELL_MS;
+}
+
+/** Exit once every language has had its dwell, including the final one. */
+const EXIT_START_MS = ISHIKA_LANGUAGES.reduce(
+  (sum, _, i) => sum + getLangDwellMs(i),
+  0,
+);
+/** Hard stop if exit animation / `animationend` never fires. */
+const EXIT_FALLBACK_MS = EXIT_START_MS + 1089;
 
 export default function LogoMorph({ onComplete }: LogoMorphProps) {
   const [exiting, setExiting] = useState(false);
@@ -62,12 +72,22 @@ export default function LogoMorph({ onComplete }: LogoMorphProps) {
   }, [finish]);
 
   useEffect(() => {
-    const id = window.setInterval(() => {
-      setNameIndex((i) =>
-        i < ISHIKA_LANGUAGES.length - 1 ? i + 1 : i,
+    const timeouts: number[] = [];
+    let elapsed = 0;
+
+    for (let i = 0; i < ISHIKA_LANGUAGES.length - 1; i++) {
+      elapsed += getLangDwellMs(i);
+      const nextIndex = i + 1;
+      timeouts.push(
+        window.setTimeout(() => {
+          setNameIndex(nextIndex);
+        }, elapsed),
       );
-    }, NAME_STEP_MS);
-    return () => window.clearInterval(id);
+    }
+
+    return () => {
+      timeouts.forEach((id) => window.clearTimeout(id));
+    };
   }, []);
 
   useEffect(() => {
