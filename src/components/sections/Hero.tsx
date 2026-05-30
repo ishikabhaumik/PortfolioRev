@@ -187,7 +187,7 @@ export default function Hero({ startReveal }: HeroProps) {
               <span>Portfolio</span>
             </div>
             <p data-meta className="hero-open-badge font-sans normal-case tracking-[0.18em] text-bone/70">
-              Open to work starting Aug 26
+              Open to work starting Aug 2026
             </p>
           </div>
           <div data-meta className="hidden md:block max-w-[22ch] text-right leading-relaxed">
