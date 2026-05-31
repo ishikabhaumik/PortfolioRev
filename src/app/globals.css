@@ -65,6 +65,13 @@ html.lenis body {
   height: 0;
 }
 
+/* Hide landing page until preloader finishes (html.preload-pending set in root layout) */
+html.preload-pending #site-content,
+.site-shell--preloading {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* ─── Preloader monogram (LogoMorph) — CSS keyframes only, no GSAP ─────── */
 @keyframes preloadIIn {
   from {

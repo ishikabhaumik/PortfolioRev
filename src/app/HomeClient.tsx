@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import dynamic from "next/dynamic";
+import { useCallback, useEffect, useState } from "react";
+import LogoMorph from "@/components/preloader/LogoMorph";
 import Hero from "@/components/sections/Hero";
 import MeetMe from "@/components/sections/MeetMe";
 import FullscreenNav from "@/components/nav/FullscreenNav";
@@ -14,10 +14,7 @@ import Personal from "@/components/sections/Personal";
 import Lessons from "@/components/sections/Lessons";
 import Contact from "@/components/sections/Contact";
 import { type BlogMeta } from "@/lib/blog";
-
-const LogoMorph = dynamic(() => import("@/components/preloader/LogoMorph"), {
-  ssr: false,
-});
+import { cn } from "@/lib/cn";
 
 interface HomeClientProps {
   posts: BlogMeta[];
@@ -27,23 +24,36 @@ export default function HomeClient({ posts: _posts }: HomeClientProps) {
   const [revealed, setRevealed] = useState(false);
   const handleRevealed = useCallback(() => setRevealed(true), []);
 
+  useEffect(() => {
+    if (revealed) {
+      document.documentElement.classList.remove("preload-pending");
+    }
+  }, [revealed]);
+
   return (
     <>
       <LogoMorph onComplete={handleRevealed} />
-      <FullscreenNav />
 
-      <main>
-        <Hero startReveal={revealed} />
-        <MeetMe />
-        <Work />
-        <About />
-        <Skills />
-        <LeetCode />
-        <Experience />
-        <Personal />
-        <Lessons />
-        <Contact />
-      </main>
+      <div
+        id="site-content"
+        className={cn(!revealed && "site-shell--preloading")}
+        aria-hidden={!revealed}
+      >
+        <FullscreenNav />
+
+        <main>
+          <Hero startReveal={revealed} />
+          <MeetMe />
+          <Work />
+          <About />
+          <Skills />
+          <LeetCode />
+          <Experience />
+          <Personal />
+          <Lessons />
+          <Contact />
+        </main>
+      </div>
     </>
   );
 }

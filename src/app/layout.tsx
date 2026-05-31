@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fontSerif.variable} ${fontSans.variable} ${fontMono.variable} ${fontBlock.variable} ${fontMontserrat.variable}`}
+      className={`preload-pending ${fontSerif.variable} ${fontSans.variable} ${fontMono.variable} ${fontBlock.variable} ${fontMontserrat.variable}`}
     >
       <body className="bg-ink text-bone font-sans antialiased vignette">
         <SmoothScroll />
