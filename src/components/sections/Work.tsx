@@ -21,7 +21,7 @@ export default function Work() {
         index="[01]"
         label="Selected Work"
         title="Few recent projects."
-        subtitle="A small, deliberate book of work. Scroll or drag to browse — click a card for details."
+        subtitle="A small, deliberate book of work. Cards emerge as you scroll in — then use the arrows to browse."
       />
 
       <ProjectArcCarousel />

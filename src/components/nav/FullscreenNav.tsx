@@ -8,6 +8,7 @@ import { lockScroll, unlockScroll } from "@/components/providers/SmoothScroll";
 
 const links: { label: string; meta: string; href: string }[] = [
   { label: "Index", meta: "00 — Home", href: "#hero" },
+  { label: "Meet Me", meta: "— Video", href: "#meet" },
   { label: "Work", meta: "01 — Selected Projects", href: "#work" },
   { label: "About", meta: "02 — The Designer", href: "#about" },
   { label: "Practice", meta: "03 — Problem Solving", href: "#practice" },

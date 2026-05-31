@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { createPortal } from "react-dom";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { lockScroll, unlockScroll } from "@/components/providers/SmoothScroll";
@@ -59,11 +60,7 @@ export const PROJECTS = [
 
 type Project = (typeof PROJECTS)[number];
 
-const SWIPE_THRESHOLD = 50;
-const CLICK_MOVE_THRESHOLD = 8;
-const WHEEL_ADVANCE = 160;
-const WHEEL_COOLDOWN_MS = 1800;
-const MAX_VISIBLE_OFFSET = 2; /* all 4 projects visible on the arc */
+const MAX_VISIBLE_OFFSET = 1; /* center + one each side = 3 cards */
 const ACTIVE_Z_BOOST = 120;
 const SIDE_Z_RECESS = 90;
 
@@ -278,19 +275,11 @@ export default function ProjectArcCarousel() {
   const sceneRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const dragRef = useRef({
-    active: false,
-    startX: 0,
-    startY: 0,
-    moved: false,
-    cardIndex: null as number | null,
-    capturing: false,
-  });
-  const wheelLockRef = useRef(false);
   const entryDoneRef = useRef(false);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
+  const [navReady, setNavReady] = useState(false);
   const [pulse, setPulse] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [announcement, setAnnouncement] = useState<string>(PROJECTS[0].name);
@@ -320,8 +309,15 @@ export default function ProjectArcCarousel() {
     [count],
   );
 
-  const goPrev = useCallback(() => goTo(activeIndex - 1), [activeIndex, goTo]);
-  const goNext = useCallback(() => goTo(activeIndex + 1), [activeIndex, goTo]);
+  const goPrev = useCallback(() => {
+    if (!revealed) return;
+    goTo(activeIndex - 1);
+  }, [activeIndex, goTo, revealed]);
+
+  const goNext = useCallback(() => {
+    if (!revealed) return;
+    goTo(activeIndex + 1);
+  }, [activeIndex, goTo, revealed]);
 
   const openProject = useCallback((index: number) => {
     setActiveIndex((prev) => {
@@ -338,7 +334,67 @@ export default function ProjectArcCarousel() {
 
   const closeProject = useCallback(() => setSelectedProject(null), []);
 
-  /* Scroll-entry fan — useLayoutEffect so card refs exist before setup */
+  const playEntryAnimation = useCallback(() => {
+    if (entryDoneRef.current) return;
+
+    const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (cards.length < count) return;
+
+    entryDoneRef.current = true;
+    const metrics = getResponsiveValues();
+
+    const order = cards
+      .map((_, i) => ({
+        i,
+        dist: Math.abs(getWrappedOffset(i, 0, count)),
+      }))
+      .filter(({ i }) =>
+        getCardPosition(i, 0, count, metrics.radius, metrics.spread, metrics.scale).visible,
+      )
+      .sort((a, b) => a.dist - b.dist);
+
+    cards.forEach((_, i) => {
+      const pos = getCardPosition(i, 0, count, metrics.radius, metrics.spread, metrics.scale);
+      if (!pos.visible) {
+        gsap.set(cards[i], { opacity: 0, visibility: "hidden", pointerEvents: "none" });
+      }
+    });
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        gsap.killTweensOf(cards);
+        flushSync(() => setRevealed(true));
+      },
+    });
+
+    order.forEach(({ i }, staggerIndex) => {
+      const pos = getCardPosition(i, 0, count, metrics.radius, metrics.spread, metrics.scale);
+      tl.fromTo(
+        cards[i],
+        {
+          opacity: 0,
+          rotateY: 0,
+          z: -200,
+          scale: 0.65,
+          visibility: "visible",
+          pointerEvents: "none",
+        },
+        {
+          rotateY: pos.angle,
+          z: pos.z,
+          scale: pos.scale,
+          opacity: 1,
+          pointerEvents: "auto",
+          duration: 1.15,
+          ease: "power3.out",
+          force3D: true,
+        },
+        staggerIndex * 0.12,
+      );
+    });
+  }, [count]);
+
+  /* Scroll-entry fan — cards emerge when section enters view */
   useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -350,135 +406,50 @@ export default function ProjectArcCarousel() {
       if (cancelled) return;
 
       const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
-      if (!cards.length) {
+      if (cards.length < count) {
         requestAnimationFrame(setup);
         return;
       }
 
       ctx = gsap.context(() => {
-        gsap.set(cards, { rotateY: 0, z: 0, opacity: 0, scale: 0.92 });
+        gsap.set(cards, { opacity: 0, rotateY: 0, z: -200, scale: 0.65, visibility: "hidden" });
 
         ScrollTrigger.create({
           trigger: root,
           start: "top 85%",
           once: true,
-          onEnter: () => {
-            if (entryDoneRef.current) return;
-            entryDoneRef.current = true;
-
-            const metrics = getResponsiveValues();
-
-            const order = cards
-              .map((_, i) => ({
-                i,
-                dist: Math.abs(getWrappedOffset(i, 0, cards.length)),
-              }))
-              .filter(({ i }) =>
-                getCardPosition(
-                  i,
-                  0,
-                  cards.length,
-                  metrics.radius,
-                  metrics.spread,
-                  metrics.scale,
-                ).visible,
-              )
-              .sort((a, b) => a.dist - b.dist);
-
-            const tl = gsap.timeline({
-              onComplete: () => {
-                entryDoneRef.current = true;
-                setRevealed(true);
-              },
-            });
-
-            order.forEach(({ i }, staggerIndex) => {
-              const pos = getCardPosition(
-                i,
-                0,
-                cards.length,
-                metrics.radius,
-                metrics.spread,
-                metrics.scale,
-              );
-              tl.to(
-                cards[i],
-                {
-                  rotateY: pos.angle,
-                  z: pos.z,
-                  opacity: pos.opacity,
-                  scale: pos.scale,
-                  duration: 1,
-                  ease: "power3.out",
-                },
-                staggerIndex * 0.08,
-              );
-            });
-          },
+          onEnter: () => playEntryAnimation(),
         });
+
+        ScrollTrigger.refresh();
       }, root);
     };
 
     setup();
 
-    /* Fallback if section is already in view or ScrollTrigger misses */
     const fallback = window.setTimeout(() => {
-      if (!entryDoneRef.current) {
-        entryDoneRef.current = true;
-        setRevealed(true);
+      if (entryDoneRef.current) return;
+      if (ScrollTrigger.isInViewport(root, 0.15)) {
+        playEntryAnimation();
       }
-    }, 1200);
+    }, 1600);
 
     return () => {
       cancelled = true;
       window.clearTimeout(fallback);
       ctx?.revert();
     };
-  }, []);
+  }, [playEntryAnimation]);
 
-  /* Hand control back to React after reveal — must run after setRevealed re-render */
-  useEffect(() => {
+  /* Enable arc transitions only after entry settles — avoids collapse on handoff */
+  useLayoutEffect(() => {
     if (!revealed) return;
-    const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
-    if (!cards.length) return;
-    gsap.set(cards, { clearProps: "all" });
-  }, [revealed]);
-
-  const wheelAccumRef = useRef(0);
-
-  /* Scroll / wheel — accumulated delta for smooth, slower steps */
-  useEffect(() => {
-    const scene = sceneRef.current;
-    if (!scene) return;
-
-    const onWheel = (e: WheelEvent) => {
-      if (!revealed || selectedProject) return;
-      const delta =
-        Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-      if (Math.abs(delta) < 2) return;
-
-      e.preventDefault();
-      e.stopPropagation();
-
-      if (wheelLockRef.current) return;
-
-      wheelAccumRef.current += delta;
-      if (Math.abs(wheelAccumRef.current) < WHEEL_ADVANCE) return;
-
-      const direction = wheelAccumRef.current > 0 ? 1 : -1;
-      wheelLockRef.current = true;
-      wheelAccumRef.current = 0;
-      window.setTimeout(() => {
-        wheelLockRef.current = false;
-      }, WHEEL_COOLDOWN_MS);
-
-      if (direction > 0) goNext();
-      else goPrev();
+    const frame = requestAnimationFrame(() => setNavReady(true));
+    return () => {
+      cancelAnimationFrame(frame);
+      setNavReady(false);
     };
-
-    scene.addEventListener("wheel", onWheel, { passive: false });
-    return () => scene.removeEventListener("wheel", onWheel);
-  }, [goNext, goPrev, revealed, selectedProject]);
+  }, [revealed]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -500,63 +471,6 @@ export default function ProjectArcCarousel() {
     return () => root.removeEventListener("keydown", onKey);
   }, [goPrev, goNext, revealed, selectedProject]);
 
-  const onPointerDown = (e: React.PointerEvent) => {
-    if (!revealed || selectedProject) return;
-
-    const card = (e.target as HTMLElement).closest<HTMLElement>("[data-index]");
-    const cardIndex = card ? Number(card.dataset.index) : NaN;
-
-    dragRef.current = {
-      active: true,
-      startX: e.clientX,
-      startY: e.clientY,
-      moved: false,
-      cardIndex: Number.isNaN(cardIndex) ? null : cardIndex,
-      capturing: false,
-    };
-  };
-
-  const onPointerMove = (e: React.PointerEvent) => {
-    if (!dragRef.current.active) return;
-
-    const deltaX = e.clientX - dragRef.current.startX;
-    const deltaY = e.clientY - dragRef.current.startY;
-
-    if (
-      !dragRef.current.moved &&
-      (Math.abs(deltaX) > CLICK_MOVE_THRESHOLD ||
-        Math.abs(deltaY) > CLICK_MOVE_THRESHOLD)
-    ) {
-      dragRef.current.moved = true;
-      sceneRef.current?.setPointerCapture(e.pointerId);
-      dragRef.current.capturing = true;
-    }
-  };
-
-  const onPointerUp = (e: React.PointerEvent) => {
-    if (!dragRef.current.active) return;
-
-    const { moved, startX, startY, cardIndex, capturing } = dragRef.current;
-    dragRef.current.active = false;
-
-    if (capturing && sceneRef.current?.hasPointerCapture(e.pointerId)) {
-      sceneRef.current.releasePointerCapture(e.pointerId);
-    }
-    dragRef.current.capturing = false;
-
-    const deltaX = e.clientX - startX;
-    const deltaY = e.clientY - startY;
-    const delta =
-      Math.abs(deltaX) >= Math.abs(deltaY) ? deltaX : deltaY;
-
-    if (Math.abs(delta) >= SWIPE_THRESHOLD) {
-      if (delta > 0) goPrev();
-      else goNext();
-    } else if (!moved && cardIndex !== null) {
-      openProject(cardIndex);
-    }
-  };
-
   const onCardActivate = (index: number) => {
     if (!revealed || selectedProject) return;
     openProject(index);
@@ -565,22 +479,26 @@ export default function ProjectArcCarousel() {
   return (
     <div
       ref={rootRef}
-      className={cn("arc-carousel", revealed && "arc-carousel--revealed")}
+      className={cn(
+        "arc-carousel",
+        revealed && "arc-carousel--revealed",
+        navReady && "arc-carousel--nav-ready",
+      )}
       tabIndex={0}
       aria-roledescription="carousel"
       aria-label="Selected projects"
     >
-      <div
-        ref={sceneRef}
-        className="arc-carousel__viewport arc-scene"
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={() => {
-          dragRef.current.active = false;
-          dragRef.current.capturing = false;
-        }}
+      <button
+        type="button"
+        className="arc-carousel__arrow arc-carousel__arrow--prev"
+        aria-label="Previous project"
+        onClick={goPrev}
+        disabled={!revealed || !!selectedProject}
       >
+        ←
+      </button>
+
+      <div ref={sceneRef} className="arc-carousel__viewport arc-scene">
         <div ref={ringRef} className="arc-carousel__ring arc-ring">
           {PROJECTS.map((project, i) => {
             const pos = getCardPosition(
@@ -592,7 +510,6 @@ export default function ProjectArcCarousel() {
               arcMetrics.scale,
             );
             const isActive = pos.isActive;
-            const showCard = !revealed || pos.visible;
 
             return (
               <div
@@ -604,24 +521,29 @@ export default function ProjectArcCarousel() {
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${project.name}, ${i + 1} of ${count}`}
-                aria-hidden={!pos.visible}
+                aria-hidden={revealed ? !pos.visible : false}
                 tabIndex={revealed && pos.visible ? 0 : -1}
                 data-cursor="view"
                 className={cn(
                   "arc-card",
-                  isActive && "arc-card--active active",
+                  isActive && revealed && "arc-card--active active",
                   isActive && pulse && "arc-card--pulse",
                   !revealed && "arc-card--pre-reveal",
                   revealed && !pos.visible && "arc-card--hidden",
                 )}
-                style={{
-                  transform: pos.visible ? pos.transform : undefined,
-                  scale: showCard ? (revealed ? pos.scale : undefined) : 0.01,
-                  opacity: showCard ? (revealed ? pos.opacity : undefined) : 0,
-                  visibility: showCard ? pos.visibility : "hidden",
-                  pointerEvents: revealed && pos.visible ? pos.pointerEvents : "none",
-                  zIndex: pos.zIndex,
-                }}
+                style={
+                  revealed
+                    ? {
+                        transform: `rotateY(${pos.angle}deg) translateZ(${pos.z}px)`,
+                        scale: pos.visible ? pos.scale : 0.01,
+                        opacity: pos.visible ? 1 : 0,
+                        visibility: pos.visible ? "visible" : "hidden",
+                        pointerEvents: pos.visible ? pos.pointerEvents : "none",
+                        zIndex: pos.zIndex,
+                      }
+                    : undefined
+                }
+                onClick={() => onCardActivate(i)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
@@ -657,6 +579,16 @@ export default function ProjectArcCarousel() {
         </div>
       </div>
 
+      <button
+        type="button"
+        className="arc-carousel__arrow arc-carousel__arrow--next"
+        aria-label="Next project"
+        onClick={goNext}
+        disabled={!revealed || !!selectedProject}
+      >
+        →
+      </button>
+
       <div className="arc-carousel__dots" role="tablist" aria-label="Project slides">
         {PROJECTS.map((project, i) => (
           <button
@@ -669,7 +601,8 @@ export default function ProjectArcCarousel() {
               "arc-carousel__dot",
               i === activeIndex && "arc-carousel__dot--active",
             )}
-            onClick={() => goTo(i)}
+            onClick={() => revealed && goTo(i)}
+            disabled={!revealed}
           />
         ))}
       </div>
