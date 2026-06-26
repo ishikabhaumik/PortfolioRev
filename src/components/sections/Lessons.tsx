@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionLabel from "@/components/ui/SectionLabel";
+import Highlight from "@/components/ui/Highlight";
 
 interface Lesson {
   index: string;
@@ -10,31 +11,42 @@ interface Lesson {
   body: string;
 }
 
+const lessonBodies: Record<string, React.ReactNode> = {
+  "01": (
+    <>
+      Some of the most meaningful opportunities in my life started from simply being{" "}
+      <Highlight>curious</Highlight> enough to explore something new. I&apos;ve learned that growth
+      rarely comes from already knowing the answer — it comes from staying open long enough to discover
+      one.
+    </>
+  ),
+  "02": (
+    <>
+      The projects I&apos;m proudest of were never built in one perfect attempt. They were shaped
+      through iteration, frustration, refinement, and patience.{" "}
+      <Highlight>Good work takes time to become simple.</Highlight>
+    </>
+  ),
+  "03": (
+    <>
+      Building software taught me that technology alone is never enough. The best systems are the ones
+      that understand <Highlight>people</Highlight>, reduce friction, and make someone feel considered
+      on the other side of the screen.
+    </>
+  ),
+  "04": (
+    <>
+      Some of my best ideas arrived away from the laptop — through conversations, books, long walks,
+      sports, and moments of stillness. I&apos;ve learned that creating meaningful work also means
+      making space to <Highlight>actually live</Highlight>.
+    </>
+  ),
+};
 const lessons: Lesson[] = [
-  {
-    index: "01",
-    title: "Stay Curious",
-    body:
-      "Some of the most meaningful opportunities in my life started from simply being curious enough to explore something new. I've learned that growth rarely comes from already knowing the answer. It comes from staying open long enough to discover one.",
-  },
-  {
-    index: "02",
-    title: "Build Slowly",
-    body:
-      "The projects I'm proudest of were never built in one perfect attempt. They were shaped through iteration, frustration, refinement, and patience. Good work takes time to become simple.",
-  },
-  {
-    index: "03",
-    title: "Work With People",
-    body:
-      "Building software taught me that technology alone is never enough. The best systems are the ones that understand people, reduce friction, and make someone feel considered on the other side of the screen.",
-  },
-  {
-    index: "04",
-    title: "Touch Grass",
-    body:
-      "Some of my best ideas arrived away from the laptop. Through conversations, books, long walks, sports, and moments of stillness. I've learned that creating meaningful work also means making space to actually live.",
-  },
+  { index: "01", title: "Stay Curious", body: "" },
+  { index: "02", title: "Build Slowly", body: "" },
+  { index: "03", title: "Work With People", body: "" },
+  { index: "04", title: "Touch Grass", body: "" },
 ];
 
 export default function Lessons() {
@@ -74,8 +86,17 @@ export default function Lessons() {
       <SectionLabel
         index="[07]"
         label="Lessons Learnt"
-        title="What the work has quietly taught me."
-        subtitle="A few principles I keep returning to — across projects, people, and the years between."
+        title={
+          <>
+            What the work has <Highlight>quietly taught</Highlight> me.
+          </>
+        }
+        subtitle={
+          <>
+            A few principles I keep returning to — across <Highlight>projects</Highlight>, people, and
+            the years between.
+          </>
+        }
       />
 
       <div className="grid grid-cols-1 gap-px bg-line md:grid-cols-2">
@@ -91,11 +112,27 @@ export default function Lessons() {
             </div>
 
             <h3 className="font-serif text-3xl font-light leading-tight text-bone transition-transform duration-700 ease-elegant group-hover:translate-x-1 md:text-4xl">
-              {l.title}
+              {l.index === "01" ? (
+                <>
+                  Stay <Highlight>Curious</Highlight>
+                </>
+              ) : l.index === "02" ? (
+                <>
+                  Build <Highlight>Slowly</Highlight>
+                </>
+              ) : l.index === "03" ? (
+                <>
+                  Work With <Highlight>People</Highlight>
+                </>
+              ) : (
+                <>
+                  Touch <Highlight>Grass</Highlight>
+                </>
+              )}
             </h3>
 
             <p className="max-w-md text-base leading-relaxed text-bone/70">
-              {l.body}
+              {lessonBodies[l.index]}
             </p>
           </article>
         ))}

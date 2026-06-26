@@ -3,11 +3,13 @@
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionLabel from "@/components/ui/SectionLabel";
+import Highlight from "@/components/ui/Highlight";
 
-const categories: { title: string; items: string[] }[] = [
+const categories: { title: string; items: string[]; highlightItems?: string[]; highlightTitle?: boolean }[] = [
   {
     title: "Languages",
     items: ["TypeScript", "JavaScript", "Python", "Java", "SQL", "C++"],
+    highlightItems: ["TypeScript", "Python"],
   },
   {
     title: "Frontend",
@@ -19,6 +21,7 @@ const categories: { title: string; items: string[] }[] = [
       "Component Architecture",
       "State Management",
     ],
+    highlightItems: ["React", "Next.js"],
   },
   {
     title: "Backend",
@@ -45,6 +48,8 @@ const categories: { title: string; items: string[] }[] = [
       "Evals",
       "AI-assisted Development (Claude Code, Cursor)",
     ],
+    highlightItems: ["Agentic Workflows", "RAG", "LLM APIs", "Tool Calling", "Structured Outputs"],
+    highlightTitle: true,
   },
   {
     title: "Cloud & Infra",
@@ -56,6 +61,7 @@ const categories: { title: string; items: string[] }[] = [
       "PostgreSQL",
       "Redis",
     ],
+    highlightItems: ["AWS (EC2, S3, Lambda)", "CI/CD Pipelines"],
   },
   {
     title: "Tools & Practices",
@@ -105,7 +111,11 @@ export default function Skills() {
       <SectionLabel
         index="[03]"
         label="Capabilities"
-        title="A composer's toolkit."
+        title={
+          <>
+            A composer&apos;s <Highlight>toolkit</Highlight>.
+          </>
+        }
       />
 
       <div className="flex flex-col">
@@ -124,7 +134,7 @@ export default function Skills() {
                   data-skill-title
                   className="font-serif text-3xl font-light text-bone md:text-5xl"
                 >
-                  {cat.title}
+                  {cat.highlightTitle ? <Highlight>{cat.title}</Highlight> : cat.title}
                 </h3>
               </div>
             </div>
@@ -140,7 +150,11 @@ export default function Skills() {
                   data-skill-item
                   className="rounded-full border border-bone/15 px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.2em] text-bone/75 transition-colors duration-300 hover:border-bone/60 hover:text-bone"
                 >
-                  {item}
+                  {cat.highlightItems?.includes(item) ? (
+                    <Highlight>{item}</Highlight>
+                  ) : (
+                    item
+                  )}
                 </li>
               ))}
             </ul>

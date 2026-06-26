@@ -18,7 +18,8 @@ const config: Config = {
         },
         ash: "#6F6F6D",
         line: "#1B1B1B",
-        // Subtle "accent" used sparingly — a brighter off-white, never colored
+        // Warm gold accent for achievements and standout phrases
+        highlight: "#E8C49A",
         accent: "#F5F2EC",
       },
       fontFamily: {

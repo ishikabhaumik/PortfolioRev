@@ -4,13 +4,14 @@ import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SplitText from "@/components/ui/SplitText";
 import SectionLabel from "@/components/ui/SectionLabel";
+import Highlight from "@/components/ui/Highlight";
 
 const facts = [
   { k: "Based", v: "Davis, California" },
-  { k: "Focus", v: "AI · Full-Stack · Product" },
+  { k: "Focus", v: "AI · Full-Stack · Product", highlight: true },
   { k: "Years", v: "04" },
-  { k: "Status", v: "Open — Summer '26" },
-];
+  { k: "Status", v: "Open — Summer '26", highlight: true },
+] as const;
 
 export default function About() {
   const ref = useRef<HTMLElement>(null);
@@ -42,8 +43,20 @@ export default function About() {
       <SectionLabel
         index="[02]"
         label="About"
-        title="A software engineer blending systems thinking with design sensibility, building agentic AI and polished product experiences."
-        subtitle="Software engineer who enjoys building reliable products end to end, from APIs and backend services to the interfaces people use every day. I care about clear architecture, solid performance, and shipping work that stays maintainable as it grows."
+        title={
+          <>
+            A software engineer blending systems thinking with design sensibility, building{" "}
+            <Highlight>agentic AI</Highlight> and polished product experiences.
+          </>
+        }
+        subtitle={
+          <>
+            Software engineer who enjoys building reliable products end to end — from APIs and
+            backend services to the interfaces people use every day. I care about{" "}
+            <Highlight>clear architecture</Highlight>, solid performance, and shipping work that
+            stays maintainable as it grows.
+          </>
+        }
       />
 
       <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-16">
@@ -57,12 +70,7 @@ export default function About() {
               className="block"
             />
             <span className="block italic text-bone">
-              <SplitText
-                text="every interaction deserves intention."
-                by="word"
-                stagger={0.06}
-                inViewDelay={0.4}
-              />
+              every interaction deserves <Highlight>intention</Highlight>.
             </span>
           </blockquote>
 
@@ -72,7 +80,9 @@ export default function About() {
                 <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-bone/40">
                   {f.k}
                 </span>
-                <span className="font-serif text-xl text-bone">{f.v}</span>
+                <span className="font-serif text-xl text-bone">
+                  {"highlight" in f && f.highlight ? <Highlight>{f.v}</Highlight> : f.v}
+                </span>
               </div>
             ))}
           </div>
@@ -102,17 +112,25 @@ export default function About() {
 
           <div className="space-y-5 text-base leading-relaxed text-bone/75">
             <p>
-              I&apos;m Ishika, a software engineer and designer finishing my M.S. in Computer Science at
-              UC Davis. Previously at Novartis one of the largest multinational pharmaceutical and healthcare corporations in the world , I built full-stack systems serving 4,000+ users and
-              created automation that reduced reporting time by 96%.
+              I&apos;m Ishika, a software engineer and designer finishing my{" "}
+              <Highlight>M.S. in Computer Science</Highlight> at UC Davis. Previously at{" "}
+              <Highlight>Novartis</Highlight>, one of the largest multinational pharmaceutical and
+              healthcare corporations in the world, I built full-stack systems serving{" "}
+              <Highlight>4,000+ users</Highlight> and created automation that reduced reporting time by{" "}
+              <Highlight>96%</Highlight>.
             </p>
             <p>
-              I care deeply about building software that feels thoughtful to use, not just technically
+              I care deeply about building software that feels thoughtful to use — not just technically
               strong systems, but products that feel intuitive, polished, and human. Lately, that&apos;s
-              meant building AI-native experiences with LLMs, RAG pipelines, and agentic workflows. My
-              latest project, SafeWalk, won Best AI Depth &amp; Integration at HackHayward 2026.
+              meant building AI-native experiences with <Highlight>LLMs</Highlight>,{" "}
+              <Highlight>RAG pipelines</Highlight>, and <Highlight>agentic workflows</Highlight>. My
+              latest project, <Highlight>SafeWalk</Highlight>, won{" "}
+              <Highlight>Best AI Depth &amp; Integration at HackHayward 2026</Highlight>.
             </p>
-            <p>Open to full-time software engineering roles starting Summer 2026.</p>
+            <p>
+              Open to full-time software engineering roles starting{" "}
+              <Highlight>Summer 2026</Highlight>.
+            </p>
           </div>
         </div>
       </div>

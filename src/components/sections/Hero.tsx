@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
 import SplitText from "@/components/ui/SplitText";
+import Highlight from "@/components/ui/Highlight";
 
 const ParticleField = dynamic(() => import("@/components/three/ParticleField"), {
   ssr: false,
@@ -186,14 +187,14 @@ export default function Hero({ startReveal }: HeroProps) {
               <span className="text-bone">[01]</span>
               <span>Portfolio</span>
             </div>
-            <p data-meta className="hero-open-badge font-sans normal-case tracking-[0.18em] text-bone/70">
-              Open to work starting Aug 2026
+            <p data-meta className="hero-open-badge font-sans normal-case tracking-[0.18em]">
+              Open to work starting <Highlight>Aug 2026</Highlight>
             </p>
           </div>
           <div data-meta className="hidden md:block max-w-[22ch] text-right leading-relaxed">
             Davis, California
             <br />
-            UC Davis · MSCS &apos;26
+            UC Davis · <Highlight>MSCS &apos;26</Highlight>
           </div>
         </div>
 
@@ -229,11 +230,12 @@ export default function Hero({ startReveal }: HeroProps) {
             <div className="flex items-center gap-4 text-bone/80">
               <span className="block h-px w-10 bg-bone" />
               <span className="font-mono text-xs uppercase tracking-[0.35em]">
-                Software Developer
+                <Highlight>Software Developer</Highlight>
               </span>
             </div>
             <p className="max-w-md font-serif text-lg italic leading-snug text-bone/70 md:text-xl">
-              I build software people stop to look at — at the seam of design, engineering, and AI.
+              I build software people <Highlight>stop to look at</Highlight> — at the seam of{" "}
+              <Highlight>design, engineering, and AI</Highlight>.
             </p>
           </div>
         </div>

@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { cn } from "@/lib/cn";
 
 interface SectionLabelProps {
   index: string;
   label: string;
-  title: string;
-  subtitle?: string;
+  title: ReactNode;
+  subtitle?: ReactNode;
   align?: "left" | "right";
   className?: string;
 }

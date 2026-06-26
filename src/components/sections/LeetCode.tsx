@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
+import Highlight from "@/components/ui/Highlight";
 
 const stats: { label: string; value: string }[] = [
   { label: "Cadence", value: "Daily" },
@@ -62,8 +63,18 @@ export default function LeetCode() {
       <SectionLabel
         index="[04]"
         label="Practice"
-        title="Problem solving, as a daily ritual."
-        subtitle="The quiet discipline behind the work — staying sharp on algorithms, data structures, and the small joy of an elegant solution."
+        title={
+          <>
+            Problem solving, as a <Highlight>daily ritual</Highlight>.
+          </>
+        }
+        subtitle={
+          <>
+            The quiet discipline behind the work — staying sharp on{" "}
+            <Highlight>algorithms</Highlight> and <Highlight>data structures</Highlight>, and the small
+            joy of an elegant solution.
+          </>
+        }
       />
 
       <div className="grid grid-cols-1 gap-16 md:grid-cols-12 md:gap-16">
@@ -77,18 +88,13 @@ export default function LeetCode() {
               className="block"
             />
             <span className="block italic text-bone">
-              <SplitText
-                text="a good puzzle."
-                by="word"
-                stagger={0.06}
-                inViewDelay={0.3}
-              />
+              a <Highlight>good puzzle</Highlight>.
             </span>
           </blockquote>
 
           <p className="mt-10 max-w-xl text-base leading-relaxed text-bone/70">
-            Daily reps on patterns, edge cases, and elegant
-            simplifications that quietly carry over to every system I build.
+            <Highlight>Daily reps</Highlight> on patterns, edge cases, and elegant simplifications that
+            quietly carry over to every system I build.
           </p>
 
           <div className="mt-10" data-cta>
@@ -115,7 +121,11 @@ export default function LeetCode() {
                   {s.label}
                 </span>
                 <span className="font-serif text-xl text-bone md:text-2xl">
-                  {s.value}
+                  {s.label === "Cadence" || s.label === "Patterns" ? (
+                    <Highlight>{s.value}</Highlight>
+                  ) : (
+                    s.value
+                  )}
                 </span>
               </div>
             ))}

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionLabel from "@/components/ui/SectionLabel";
+import Highlight from "@/components/ui/Highlight";
 import { cn } from "@/lib/cn";
 
 interface Role {
@@ -94,8 +95,16 @@ export default function Experience() {
       <SectionLabel
         index="[05]"
         label="Trajectory"
-        title="Built Over Time."
-        subtitle="Software, design, and systems thinking — evolving together."
+        title={
+          <>
+            Built <Highlight>Over Time</Highlight>.
+          </>
+        }
+        subtitle={
+          <>
+            Software, design, and <Highlight>systems thinking</Highlight> — evolving together.
+          </>
+        }
       />
 
       <ol className="flex flex-col border-t border-line">
@@ -119,7 +128,11 @@ export default function Experience() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="font-serif text-2xl text-bone transition-transform duration-700 ease-elegant group-hover:translate-x-2 md:text-4xl">
-                    {r.company}
+                    {r.company === "Novartis" || r.company === "UC Davis" ? (
+                      <Highlight>{r.company}</Highlight>
+                    ) : (
+                      r.company
+                    )}
                   </span>
                   <span className="font-mono text-xs uppercase tracking-[0.3em] text-bone/50 md:ml-auto md:pr-8">
                     {r.role}
@@ -148,7 +161,43 @@ export default function Experience() {
                 <div className="overflow-hidden">
                   <div className="grid grid-cols-1 gap-6 pb-10 pl-0 pt-2 md:grid-cols-12 md:pl-24">
                     <p className="md:col-span-7 text-base leading-relaxed text-bone/75">
-                      {r.description}
+                      {r.company === "Novartis" && r.role === "Associate Software Engineer" ? (
+                        <>
+                          Owned <Highlight>full-stack features end-to-end</Highlight> in React,
+                          TypeScript, Java, and REST APIs — from architecture through deployment — for
+                          applications serving <Highlight>4,000+ users</Highlight>. Cut system latency by{" "}
+                          <Highlight>30%</Highlight> via systematic profiling, designed third-party API
+                          integrations that eliminated manual workflows, and earned a company{" "}
+                          <Highlight>Best Innovation award</Highlight> for an automation pipeline that
+                          reduced reporting time by <Highlight>96%</Highlight>.
+                        </>
+                      ) : r.company === "UC Davis" && r.role === "Graduate Student Researcher" ? (
+                        <>
+                          Designed a metadata-driven framework to predict image quality metrics across
+                          the <Highlight>MIDRC chest CT database</Highlight>. Leveraged
+                          multi-institutional phantom data to map scan parameters to quantitative IQ
+                          measures, enabling image-quality–based cohort selection and enhancing the
+                          IQ-dependent assessment capabilities of{" "}
+                          <Highlight>AI-driven medical imaging</Highlight> algorithms.
+                        </>
+                      ) : r.company === "UC Davis" && r.role.includes("Teaching Assistant") ? (
+                        <>
+                          Pursuing my Master&apos;s in Computer Science with a focus on{" "}
+                          <Highlight>AI systems</Highlight>, <Highlight>distributed computing</Highlight>
+                          , and product engineering. Mentor students as a TA through coding labs,
+                          debugging workshops, and code reviews — translating production engineering
+                          instincts to the classroom.
+                        </>
+                      ) : r.company === "HighRadius Technologies" ? (
+                        <>
+                          Built React-based dashboards for financial data workflows integrated with
+                          Snowflake and SQL pipelines, supporting analytics for 50+ users. Optimized
+                          backend queries and data processing pipelines, cutting latency by{" "}
+                          <Highlight>50%</Highlight>.
+                        </>
+                      ) : (
+                        r.description
+                      )}
                     </p>
                     <div className="md:col-span-3 md:col-start-9 flex flex-col gap-3">
                       <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-bone/40">

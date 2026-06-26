@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap } from "@/lib/gsap";
 import { cn } from "@/lib/cn";
+import Highlight from "@/components/ui/Highlight";
 import { lockScroll, unlockScroll } from "@/components/providers/SmoothScroll";
 
 const links: { label: string; meta: string; href: string }[] = [
   { label: "Index", meta: "00 — Home", href: "#hero" },
-  { label: "Meet Me", meta: "— Video", href: "#meet" },
   { label: "Work", meta: "01 — Selected Projects", href: "#work" },
   { label: "About", meta: "02 — The Designer", href: "#about" },
   { label: "Practice", meta: "03 — Problem Solving", href: "#practice" },
@@ -139,7 +139,7 @@ export default function FullscreenNav() {
         <div className="relative z-10 flex h-full flex-col px-6 pt-32 pb-28 md:px-12 md:pt-36">
           <div className="mb-12 flex justify-between font-mono text-[10px] uppercase tracking-[0.4em] text-bone/50">
             <span data-nav-meta>Navigation</span>
-            <span data-nav-meta>07 Sections</span>
+            <span data-nav-meta>06 Sections</span>
           </div>
 
           <ul ref={linksRef} className="flex flex-1 flex-col justify-center gap-2 md:gap-1">
@@ -174,7 +174,9 @@ export default function FullscreenNav() {
           <div className="mt-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="flex flex-col gap-1 font-mono text-[10px] uppercase tracking-[0.4em] text-bone/50">
               <span data-nav-meta>bhaumikiman26@gmail.com</span>
-              <span data-nav-meta>Open to roles · Summer 2026</span>
+              <span data-nav-meta>
+                <Highlight>Open to roles</Highlight> · <Highlight>Summer 2026</Highlight>
+              </span>
             </div>
             <div className="flex gap-6 font-mono text-[10px] uppercase tracking-[0.4em] text-bone/50">
               <a

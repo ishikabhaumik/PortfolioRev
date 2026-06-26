@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
+import Highlight from "@/components/ui/Highlight";
 
 const pursuits: { title: string; blurb: string; label: string }[] = [
   {
@@ -124,7 +125,11 @@ export default function Personal() {
       <SectionLabel
         index="[06]"
         label="Off the clock"
-        title="What keeps the work honest."
+        title={
+          <>
+            What keeps the work <Highlight>honest</Highlight>.
+          </>
+        }
         subtitle="The hours away from the keyboard that quietly inform everything that I create."
       />
 
@@ -159,18 +164,14 @@ export default function Personal() {
               inViewDelay={0.25}
               className="block italic"
             />
-            <SplitText
-              text="and stays curious."
-              by="word"
-              stagger={0.06}
-              inViewDelay={0.5}
-              className="block"
-            />
+            <span className="block">
+              and <Highlight>stays curious</Highlight>.
+            </span>
           </blockquote>
 
           <p className="max-w-sm text-base leading-relaxed text-bone/65">
-            I care deeply about craftsmanship, both in software and in life. The details we
-            notice, the pace we move at, and the experiences we absorb inevitably become part
+            I care deeply about <Highlight>craftsmanship</Highlight>, both in software and in life. The
+            details we notice, the pace we move at, and the experiences we absorb inevitably become part
             of what we build.
           </p>
         </div>
@@ -190,7 +191,17 @@ export default function Personal() {
                 {p.title}
               </h3>
               <p className="col-span-12 col-start-4 md:col-span-5 md:col-start-8 font-serif text-base italic leading-snug text-bone/60 md:text-lg">
-                {p.blurb}
+                {p.title === "TED Talk" ? (
+                  <>
+                    I aspire to give a <Highlight>TED Talk</Highlight> someday.
+                  </>
+                ) : p.title === "Tech & Music" ? (
+                  <>
+                    I love <Highlight>coding</Highlight> and <Highlight>music</Highlight>.
+                  </>
+                ) : (
+                  p.blurb
+                )}
               </p>
             </li>
           ))}
@@ -202,7 +213,7 @@ export default function Personal() {
         <div className="mb-8 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.4em] text-bone/45">
           <span>Always</span>
           <span className="block h-px w-16 bg-bone/25" />
-          <span>Building What&apos;s Next</span>
+          <span>Building <Highlight>What&apos;s Next</Highlight></span>
         </div>
 
         <div className="relative -mx-6 overflow-hidden md:-mx-12">

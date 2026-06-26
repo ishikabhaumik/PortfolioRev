@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from "react";
 import LogoMorph from "@/components/preloader/LogoMorph";
 import Hero from "@/components/sections/Hero";
-import MeetMe from "@/components/sections/MeetMe";
 import FullscreenNav from "@/components/nav/FullscreenNav";
 import About from "@/components/sections/About";
 import Skills from "@/components/sections/Skills";
@@ -43,7 +42,6 @@ export default function HomeClient({ posts: _posts }: HomeClientProps) {
 
         <main>
           <Hero startReveal={revealed} />
-          <MeetMe />
           <Work />
           <About />
           <Skills />

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SplitText from "@/components/ui/SplitText";
+import Highlight from "@/components/ui/Highlight";
 import MagneticButton from "@/components/ui/MagneticButton";
 
 const RESUME_URL = "https://ishikabhaumik.github.io/Resume.pdf";
@@ -54,20 +55,12 @@ export default function Contact() {
         <div className="md:col-span-7">
           <h2 className="font-serif text-display-lg font-light leading-[0.95] text-bone">
             <SplitText text="Let's build" by="word" stagger={0.06} className="block" />
-            <SplitText
-              text="something"
-              by="word"
-              stagger={0.06}
-              inViewDelay={0.2}
-              className="block self-end pl-8 italic text-bone/90 md:pl-24"
-            />
-            <SplitText
-              text="worth staring at."
-              by="word"
-              stagger={0.06}
-              inViewDelay={0.45}
-              className="block italic"
-            />
+            <span className="block self-end pl-8 italic text-bone/90 md:pl-24">
+              <Highlight>something</Highlight>
+            </span>
+            <span className="block italic">
+              worth <Highlight>staring at.</Highlight>
+            </span>
           </h2>
 
           <div className="mt-12 flex flex-col gap-2 md:mt-16">
@@ -90,7 +83,7 @@ export default function Contact() {
             Résumé
           </span>
           <p data-c-anim className="max-w-md font-serif text-xl leading-snug text-bone/65 md:text-2xl">
-            PDF overview of experience and projects — opens in a new tab.
+            PDF overview of <Highlight>experience and projects</Highlight> — opens in a new tab.
           </p>
           <div data-c-anim className="pt-2">
             <MagneticButton
@@ -128,7 +121,9 @@ export default function Contact() {
             </a>
           ))}
         </div>
-        <div>Designed &amp; built in California</div>
+        <div>
+          Designed &amp; built in <Highlight>California</Highlight>
+        </div>
       </div>
     </section>
   );
