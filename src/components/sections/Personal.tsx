@@ -123,7 +123,7 @@ export default function Personal() {
       className="relative px-6 py-32 md:px-12 md:py-48"
     >
       <SectionLabel
-        index="[06]"
+        index="[07]"
         label="Off the clock"
         title={
           <>

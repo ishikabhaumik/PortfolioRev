@@ -18,15 +18,6 @@ interface Role {
 const roles: Role[] = [
   {
     company: "UC Davis",
-    role: "Graduate Student Researcher",
-    period: "Sep 2024 — Jun 2026",
-    location: "Davis, CA",
-    description:
-      "Designed a metadata-driven framework to predict image quality metrics across the MIDRC chest CT database. Leveraged multi-institutional phantom data to map scan parameters to quantitative IQ measures, enabling image-quality–based cohort selection and enhancing the IQ-dependent assessment capabilities of AI-driven medical imaging algorithms.",
-    tags: ["Medical Imaging", "AI", "Machine Learning", "Image Quality", "Research"],
-  },
-  {
-    company: "UC Davis",
     role: "M.S. Computer Science · Teaching Assistant",
     period: "Sep 2024 — Jun 2026",
     location: "Davis, CA",
@@ -93,7 +84,7 @@ export default function Experience() {
   return (
     <section ref={ref} id="experience" className="relative px-6 py-32 md:px-12 md:py-48">
       <SectionLabel
-        index="[05]"
+        index="[06]"
         label="Trajectory"
         title={
           <>
@@ -170,15 +161,6 @@ export default function Experience() {
                           integrations that eliminated manual workflows, and earned a company{" "}
                           <Highlight>Best Innovation award</Highlight> for an automation pipeline that
                           reduced reporting time by <Highlight>96%</Highlight>.
-                        </>
-                      ) : r.company === "UC Davis" && r.role === "Graduate Student Researcher" ? (
-                        <>
-                          Designed a metadata-driven framework to predict image quality metrics across
-                          the <Highlight>MIDRC chest CT database</Highlight>. Leveraged
-                          multi-institutional phantom data to map scan parameters to quantitative IQ
-                          measures, enabling image-quality–based cohort selection and enhancing the
-                          IQ-dependent assessment capabilities of{" "}
-                          <Highlight>AI-driven medical imaging</Highlight> algorithms.
                         </>
                       ) : r.company === "UC Davis" && r.role.includes("Teaching Assistant") ? (
                         <>

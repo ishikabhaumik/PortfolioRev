@@ -45,7 +45,7 @@ export default function Contact() {
       className="relative overflow-hidden px-6 pt-24 pb-16 md:px-12 md:pt-40 md:pb-20"
     >
       <div className="mb-16 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.4em] text-bone/55">
-        <span data-c-anim>[08]</span>
+        <span data-c-anim>[09]</span>
         <span data-c-anim className="block h-px w-16 bg-bone/30" />
         <span data-c-anim>Contact</span>
       </div>

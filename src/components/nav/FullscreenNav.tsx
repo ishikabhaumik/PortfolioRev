@@ -11,10 +11,12 @@ const links: { label: string; meta: string; href: string }[] = [
   { label: "Index", meta: "00 — Home", href: "#hero" },
   { label: "Work", meta: "01 — Selected Projects", href: "#work" },
   { label: "About", meta: "02 — The Designer", href: "#about" },
-  { label: "Practice", meta: "03 — Problem Solving", href: "#practice" },
-  { label: "Personal", meta: "04 — Off the Clock", href: "#personal" },
-  { label: "Lessons", meta: "05 — What I've Learnt", href: "#lessons" },
-  { label: "Contact", meta: "06 — Let's Talk", href: "#contact" },
+  { label: "Practice", meta: "04 — Problem Solving", href: "#practice" },
+  { label: "Research", meta: "05 — Lab & Analysis", href: "#research" },
+  { label: "Experience", meta: "06 — Industry", href: "#experience" },
+  { label: "Personal", meta: "07 — Off the Clock", href: "#personal" },
+  { label: "Lessons", meta: "08 — What I've Learnt", href: "#lessons" },
+  { label: "Contact", meta: "09 — Let's Talk", href: "#contact" },
 ];
 
 export default function FullscreenNav() {
@@ -139,7 +141,7 @@ export default function FullscreenNav() {
         <div className="relative z-10 flex h-full flex-col px-6 pt-32 pb-28 md:px-12 md:pt-36">
           <div className="mb-12 flex justify-between font-mono text-[10px] uppercase tracking-[0.4em] text-bone/50">
             <span data-nav-meta>Navigation</span>
-            <span data-nav-meta>06 Sections</span>
+            <span data-nav-meta>09 Sections</span>
           </div>
 
           <ul ref={linksRef} className="flex flex-1 flex-col justify-center gap-2 md:gap-1">

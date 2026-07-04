@@ -7,6 +7,7 @@ import FullscreenNav from "@/components/nav/FullscreenNav";
 import About from "@/components/sections/About";
 import Skills from "@/components/sections/Skills";
 import LeetCode from "@/components/sections/LeetCode";
+import Research from "@/components/sections/Research";
 import Experience from "@/components/sections/Experience";
 import Work from "@/components/sections/Work";
 import Personal from "@/components/sections/Personal";
@@ -46,6 +47,7 @@ export default function HomeClient({ posts: _posts }: HomeClientProps) {
           <About />
           <Skills />
           <LeetCode />
+          <Research />
           <Experience />
           <Personal />
           <Lessons />

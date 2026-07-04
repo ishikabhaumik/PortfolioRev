@@ -84,7 +84,7 @@ export default function Lessons() {
       className="relative px-6 py-32 md:px-12 md:py-48"
     >
       <SectionLabel
-        index="[07]"
+        index="[08]"
         label="Lessons Learnt"
         title={
           <>
